@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Availability  # , Booking
+from .models import Availability, AvailabilityBlock  # , Booking
+from .utils import create_slots_for_date
 
 # Register your models here.
 
@@ -12,9 +13,23 @@ from .models import Availability  # , Booking
 # search_fields = ('user__username', 'treatment__name', 'date')
 # ordering = ('-date', '-time')
 
-
 @admin.register(Availability)
 class AvailabilityAdmin(admin.ModelAdmin):
-    list_display = ('day_of_week', 'start_time',
-                    'end_time', 'unavailable', 'is_active')
-    list_filter = ('day_of_week', 'unavailable', 'is_active')
+    list_display = ('date', 'start_time', 'end_time',
+                    'is_booked')
+    list_filter = ('date', 'is_booked')
+    ordering = ('date', 'start_time')
+
+
+@admin.action(description="Create 15-minute slots for selected availability blocks")
+def create_slots(modeladmin, request, queryset):
+    for block in queryset:
+        create_slots_for_date(block.date, block.start_time,
+                              block.end_time)
+    modeladmin.message_user(request, "Slots created!")
+
+
+@admin.register(AvailabilityBlock)
+class AvailabilityBlockAdmin(admin.ModelAdmin):
+    list_display = ('date', 'start_time', 'end_time')
+    actions = [create_slots]

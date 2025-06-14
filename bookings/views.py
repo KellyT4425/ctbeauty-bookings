@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
-# Create your views here.
+from .models import Availability
 
 
-def index(request):
-    return HttpResponse("Hello, world!")
+def available_slots(request):
+    slots = Availability.objects.filter(
+        is_booked=False).order_by('date', 'start_time')
+    return render(request, 'available_slots.html', {'slots': slots})
