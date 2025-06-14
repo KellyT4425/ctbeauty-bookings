@@ -12,8 +12,8 @@ class Booking(models.Model):
     booking_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="appointment_booker")
-    treatment = models.ForeignKey(
-        Treatment, on_delete=models.CASCADE, related_name="treatment_option")
+    # treatment = models.ForeignKey(
+    # Treatment, on_delete=models.CASCADE, related_name="treatment_option")
     date = models.DateField()
     time = models.TimeField()
     status = models.CharField(max_length=20, choices=STATUS)
@@ -35,7 +35,7 @@ class Availability(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
-    unavilable = models.BooleanField(
+    unavailable = models.BooleanField(
         default=False, help_text="Mark this slot as unavailable for booking.")
     is_active = models.BooleanField(
         default=True, help_text="Set to False to temporarily disable this availability.")
