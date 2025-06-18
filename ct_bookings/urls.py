@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from bookings import views
 
+
 urlpatterns = [
-    path('available-slots/', views.available_slots, name='available_slots'),
-    # path('bookings/', include('bookings.urls'), name="booking-page"),
+    # path('', include('treatments.url'), name="treatment-page"),
+    path('', include('bookings.urls'), name="booking-page"),
+    path('summernote/', include('django_summernote.urls')),
     path('admin/', admin.site.urls),
 ]
