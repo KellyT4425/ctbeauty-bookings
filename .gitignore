@@ -1,2 +1,4 @@
 env.py
 .venv
+.github
+__pycache__/

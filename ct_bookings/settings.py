@@ -12,17 +12,26 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import AutoConfig, Csv
 import dj_database_url
 if os.path.isfile('env.py'):
     import env
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+config = AutoConfig(search_path=BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
+SECRET_KEY = config("SECRET_KEY")
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="127.0.0.1,localhost,0.0.0.0, https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/",
+    cast=Csv(),
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +55,10 @@ INSTALLED_APPS = [
     'bookings',
     'services',
 
+    # Brute force protection.
+    'axes',
+
+
 ]
 
 MIDDLEWARE = [
@@ -58,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 
@@ -100,17 +114,30 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',  # noqa
+        'OPTIONS': {'min_length': 12}
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',  # noqa
     },
+]
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',       # PBKDF2 + SHA256
+    # PBKDF2 + SHA1 (legacy)
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    # if you've installed argon2-cffi
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    # if you've installed bcrypt
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    # if you've installed scrypt
+    'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
 
@@ -132,6 +159,19 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesBackend",
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+AXES_ENABLED = True
+AXES_FAILURE_LIMIT = config("AXES_FAILURE_LIMIT", default=3, cast=int)
+AXES_COOLOFF_TIME = timedelta(hours=config(
+    "AXES_COOLOFF_HOURS", default=1, cast=int))
+AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
+AXES_RESET_ON_SUCCESS = True
 
 
 # Default primary key field type
