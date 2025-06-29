@@ -19,7 +19,6 @@ class Availability(models.Model):
         status = "Unavailable" if self.unavailable else (
             "Booked" if self.is_booked else "Available")
         return f"{self.date} {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')} ({status})"
-    # EDITIED
 
 
 class AvailabilityBlock(models.Model):

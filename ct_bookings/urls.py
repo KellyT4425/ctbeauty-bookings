@@ -21,7 +21,8 @@ from bookings import views
 
 urlpatterns = [
     # path('', include('treatments.url'), name="treatment-page"),
-    path('', include('bookings.urls'), name="booking-page"),
+    path('', views.home, name='home'),
+    path('bookings/', include('bookings.urls', namespace='bookings')),
     path('summernote/', include('django_summernote.urls')),
     path('admin/', admin.site.urls),
 ]

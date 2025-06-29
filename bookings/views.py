@@ -1,8 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Availability
 
 
-def available_slots(request):
-    slots = Availability.objects.filter(
-        is_booked=False).order_by('date', 'start_time')
-    return render(request, 'available_slots.html', {'slots': slots})
+
+def home(request):
+    return render(request, 'base.html')
