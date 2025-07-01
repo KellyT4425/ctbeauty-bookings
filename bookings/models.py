@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 import datetime
 
 # Create your models here.
-
+STATUS_CHOICES = [
+    ('PENDING',   'Pending'),
+    ('CONFIRMED', 'Confirmed'),
+    ('CANCELLED', 'Cancelled'),
+]
 
 class Availability(models.Model):
     date = models.DateField(default=datetime.date.today)
@@ -32,23 +37,38 @@ class AvailabilityBlock(models.Model):
 
 class Booking(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_bookings")
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")
     # each slot can only be booked once
-    date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    availability = models.OneToOneField(
+        Availability,
+        on_delete=models.PROTECT,
+        related_name="booking",
+        null=True, blank=True,
+        help_text="Which pre‐generated slot this booking occupies."
+    )
     treatment = models.ForeignKey(
-        'services.Treatment', on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+        'services.Treatment', on_delete=models.PROTECT, null=True,
+    blank=True, related_name='bookings')
     notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at  = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Booking'
+        verbose_name_plural = 'Bookings'
+
 
     def __str__(self):
-        return f"Booking for {self.user} on {self.date} from {self.start_time} to {self.end_time}"
+        slot = self.availability
+        return (f"Booking for {self.user} - {self.treatment} on "
+                f"{slot.date} from {slot.start_time.strftime('%H:%M')}")
 
     @classmethod
     # checking all bookings so cls is used instead of self.
     def has_conflict(cls, date, start_time, end_time, exclude_booking_id=None):
-        # check to se if a new booking would conflict with existing bookings
+        # check to see if a new booking would conflict with existing bookings
         existing_bookings = cls.objects.filter(date=date)
 
         # if we are updating an existing booking, dont check against itself.
@@ -67,6 +87,6 @@ class Booking(models.Model):
         """Django calls this to validate the model before saving"""
         from django.core.exceptions import ValidationError
 
-        if Booking.has_conflict(self.date, self.start_time, self.end_time, self.id):
+        if self.availability.is_booked:
             raise ValidationError(
                 "This time slot conflicts with an existing booking.")

@@ -16,15 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from bookings import views
 
 
 urlpatterns = [
-    # path('', include('treatments.url'), name="treatment-page"),
-    path('', views.home, name='home'),
-    path('accounts/', include('allauth.urls')),
-    path('bookings/', include('bookings.urls', namespace='bookings')),
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+
+    # All service-related pages live under /services/
+    path("services/", include("services.urls", namespace="services")),
+
+    # All booking-related pages live under /bookings/
+    path("bookings/", include("bookings.urls", namespace="bookings")),
+
+    # Optionally, make a “home” page—could redirect to services or render a landing template
+    path("", include("services.urls", namespace="services_home")),
     path('summernote/', include('django_summernote.urls')),
 
 ]

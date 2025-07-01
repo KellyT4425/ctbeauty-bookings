@@ -92,7 +92,7 @@ ROOT_URLCONF = 'ct_bookings.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [ BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -184,7 +184,6 @@ AXES_ENABLED = True
 AXES_FAILURE_LIMIT = config("AXES_FAILURE_LIMIT", default=3, cast=int)
 AXES_COOLOFF_TIME = timedelta(hours=config(
     "AXES_COOLOFF_HOURS", default=1, cast=int))
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 AXES_RESET_ON_SUCCESS = True
 
 
