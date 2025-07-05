@@ -35,7 +35,7 @@ ALLOWED_HOSTS = config(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '.herokuapp.com',
@@ -57,8 +57,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'crispy_forms',
     'crispy_bootstrap5',
+    'bookings.apps.BookingsConfig',
     'django_summernote',
-    'bookings',
     'services',
 
     # Brute force protection.

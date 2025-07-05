@@ -26,6 +26,7 @@ urlpatterns = [
 
     # All booking-related pages live under /bookings/
     path("bookings/", include("bookings.urls", namespace="bookings")),
+    path('accounts/', include('django.contrib.auth.urls')),
 
     # Optionally, make a “home” page—could redirect to services or render a landing template
     path("", include("services.urls", namespace="services_home")),

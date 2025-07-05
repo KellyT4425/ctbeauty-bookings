@@ -10,6 +10,16 @@ STATUS_CHOICES = [
     ('CANCELLED', 'Cancelled'),
 ]
 
+WEEKDAY_CHOICES = [
+        (0, "Monday"),
+        (1, "Tuesday"),
+        (2, "Wednesday"),
+        (3, "Thursday"),
+        (4, "Friday"),
+        (5, "Saturday"),
+        (6, "Sunday"),
+    ]
+
 class Availability(models.Model):
     date = models.DateField(default=datetime.date.today)
 
@@ -25,14 +35,30 @@ class Availability(models.Model):
             "Booked" if self.is_booked else "Available")
         return f"{self.date} {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')} ({status})"
 
+class Weekday(models.Model):
+    number = models.IntegerField(choices=WEEKDAY_CHOICES, unique=True)
+    name   = models.CharField(max_length=9)
+
+    def __str__(self):
+        return self.name
 
 class AvailabilityBlock(models.Model):
-    date = models.DateField(default=datetime.date.today)
+    start_date   = models.DateField(default=datetime.date.today)
+    end_date     = models.DateField(default=datetime.date.today)
     start_time = models.TimeField()
     end_time = models.TimeField()
 
+    days_of_week = models.ManyToManyField(
+        Weekday,
+        blank=True,
+        help_text="Which days of the week this block applies to",
+    )
+
     def __str__(self):
-        return f"{self.date} from {self.start_time} to {self.end_time}"
+        days = ", ".join(d.name for d in self.days_of_week.all())
+        return (f"{self.start_date} → {self.end_date} "
+                f"@ {self.start_time.strftime('%H:%M')}–{self.end_time.strftime('%H:%M')} "
+                f"on {days}")
 
 
 class Booking(models.Model):
