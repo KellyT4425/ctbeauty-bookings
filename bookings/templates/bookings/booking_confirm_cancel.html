@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Cancel Booking{% endblock title %}
+{% block content %}
+  <h1>Cancel Booking #{{ booking.pk }}</h1>
+  <p>Are you sure you want to cancel your booking on
+     {{ booking.availability.date }} at {{ booking.availability.start_time }}?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, cancel</button>
+    <a href="{% url 'bookings:list' %}">No, go back</a>
+  </form>
+{% endblock content %}

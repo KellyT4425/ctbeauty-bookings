@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Your Bookings{% endblock title %}
+{% block content %}
+  <h1>Your Bookings</h1>
+  {% if bookings %}
+    <ul>
+      {% for b in bookings %}
+        <li>
+    <a href="{% url 'bookings:detail' b.pk %}">
+      {{ b.availability.date }} @ {{ b.availability.start_time }}
+      ({{ b.treatment }})
+    </a>
+    – <a href="{% url 'bookings:cancel' b.pk %}">Cancel</a>
+  </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No upcoming bookings.</p>
+  {% endif %}
+{% endblock content %}

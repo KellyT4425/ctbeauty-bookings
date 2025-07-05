@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Booking #{{ booking.pk }} Details{% endblock title %}
+
+{% block content %}
+  <h1>Booking Details</h1>
+
+  <dl>
+    <dt>Booking ID</dt>
+    <dd>{{ booking.pk }}</dd>
+
+    <dt>Date</dt>
+    <dd>{{ booking.availability.date }}</dd>
+
+    <dt>Time</dt>
+    <dd>
+      {{ booking.availability.start_time }} – {{ booking.availability.end_time }}
+    </dd>
+
+    <dt>Treatment</dt>
+    <dd>
+      {% if booking.treatment %}
+        {{ booking.treatment.name }}
+      {% else %}
+        <em>None selected</em>
+      {% endif %}
+    </dd>
+
+    <dt>Notes</dt>
+    <dd>
+      {% if booking.notes %}
+        {{ booking.notes }}
+      {% else %}
+        <em>No notes</em>
+      {% endif %}
+    </dd>
+
+    <dt>Status</dt>
+    <dd>{{ booking.get_status_display }}</dd>
+
+    <dt>Created At</dt>
+    <dd>{{ booking.created_at|date:"DATETIME_FORMAT" }}</dd>
+
+    <dt>Last Updated</dt>
+    <dd>{{ booking.updated_at|date:"DATETIME_FORMAT" }}</dd>
+  </dl>
+
+  <p>
+    <a href="{% url 'bookings:cancel' booking.pk %}">Cancel this booking</a> |
+    <a href="{% url 'bookings:list' %}">Back to all bookings</a>
+  </p>
+{% endblock content %}

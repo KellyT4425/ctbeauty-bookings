@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Make a Booking{% endblock title %}
+{% block content %}
+  <h1>Make a Booking</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div class="form-group">
+        {{ field.label_tag }}
+        {{ field }}
+        {{ field.errors }}
+      </div>
+    {% endfor %}
+    <button type="submit">Book Now</button>
+  </form>
+{% endblock content %}

@@ -1,26 +1,44 @@
-from django.shortcuts import render, get_object_or_404
-
-
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from .models import Booking, Availability
+from .forms import BookingForm
 
 @login_required
 def make_booking(request):
-    """TODO: display & process booking form"""
-    return HttpResponse("⚙️ Booking form coming soon…")
+    form = BookingForm(request.POST or None)
+    if form.is_valid():
+        booking = form.save(commit=False)
+        booking.user = request.user
+        # mark the slot taken
+        slot = booking.availability
+        slot.is_booked = True
+        slot.save()
+        booking.save()
+        return redirect('bookings:list')
+    return render(request, 'bookings/booking_form.html', {'form': form})
 
 @login_required
 def my_bookings(request):
-    """TODO: list this user’s bookings"""
-    return HttpResponse("⚙️ Your bookings coming soon…")
+    bookings = Booking.objects.filter(user=request.user).select_related('availability', 'treatment')
+    return render(request, 'bookings/booking_list.html', {'bookings': bookings})
+
+@login_required
+def booking_detail(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    return render(request, 'bookings/booking_detail.html', {'booking': booking})
 
 @login_required
 def cancel_booking(request, pk):
-    """TODO: cancel or update a booking"""
-    return HttpResponse(f"⚙️ Cancel booking #{pk} coming soon…")
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    if request.method == 'POST':
+        # free up the slot
+        slot = booking.availability
+        slot.is_booked = False
+        slot.save()
+        booking.delete()
+        return redirect('bookings:list')
+    return render(request, 'bookings/booking_confirm_cancel.html', {'booking': booking})
 
-def home(request):
-    return render(request, 'base.html')
 """
 B. Bookings app views
 1. make_booking
