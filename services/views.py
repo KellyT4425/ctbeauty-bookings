@@ -41,3 +41,6 @@ def treatment_list(request):
 def treatment_detail(request, slug):
     """TODO: show one treatment’s detail"""
     return HttpResponse(f"⚙️ Treatment detail for “{slug}” coming soon…")
+
+def home(request):
+    return render(request, 'home.html')
