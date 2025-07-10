@@ -13,36 +13,27 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import AutoConfig, Csv
 import dj_database_url
 from dotenv import load_dotenv
 from datetime import timedelta
 
-raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-config = AutoConfig(search_path=BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-SECRET_KEY = env.SECRET_KEY
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS",
-    default="127.0.0.1,localhost,0.0.0.0, https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/",
-    cast=Csv(),
-)
+env_path = BASE_DIR / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ['SECRET_KEY']
+DEBUG      = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    '.herokuapp.com',
-    '127.0.0.1',
-]
-
+raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
 
 # Application definition
 
@@ -108,11 +99,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ct_bookings.wsgi.application'
 
-env_path = BASE_DIR / '.env'
-if env_path.exists():
-    load_dotenv(env_path)
-
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -123,7 +109,10 @@ if env_path.exists():
 #    }
 # }
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    'default': dj_database_url.parse(
+        os.environ['DATABASE_URL'],
+        conn_max_age=600,
+    )
 }
 
 # Password validation
@@ -178,6 +167,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 AUTHENTICATION_BACKENDS = [
     "axes.backends.AxesBackend",
@@ -185,11 +176,13 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-AXES_ENABLED = True
-AXES_FAILURE_LIMIT = config("AXES_FAILURE_LIMIT", default=3, cast=int)
-AXES_COOLOFF_TIME = timedelta(hours=config(
-    "AXES_COOLOFF_HOURS", default=1, cast=int))
-AXES_RESET_ON_SUCCESS = True
+# Brute-force protection via django-axes, configured via env vars
+AXES_ENABLED = os.environ.get("AXES_ENABLED", "True") == "True"
+AXES_FAILURE_LIMIT = int(os.environ.get("AXES_FAILURE_LIMIT", "3"))
+AXES_COOLOFF_TIME = timedelta(
+     hours=int(os.environ.get("AXES_COOLOFF_HOURS", "1"))
+)
+AXES_RESET_ON_SUCCESS = os.environ.get("AXES_RESET_ON_SUCCESS", "True") == "True"
 
 
 # Default primary key field type
