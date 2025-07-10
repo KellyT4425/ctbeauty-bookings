@@ -14,38 +14,31 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-from dotenv import load_dotenv
 from datetime import timedelta
-
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env (dev only)
-env_path = BASE_DIR / '.env'
-if env_path.exists():
-    load_dotenv(env_path)
+dotenv_path = BASE_DIR / '.env'
+if dotenv_path.exists():
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path)
 
-# Added DEBUG False to Heroku Config Vars
-SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-please-change')
-DEBUG      = os.environ.get('DEBUG', 'False') == 'True'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'pzWq-IWf_4eOlHE_P1L_W0wxJuwR9M0k_qAc6nNNugM')
 
-# Always allow localhost + your Heroku domain, plus any extra from ALLOWED_HOSTS env var
-DEFAULT_HOSTS = [
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False   # ← change to True for local dev, False for Heroku
+
+# When DEBUG=False, force exceptions to bubble up so you can see them in runserver
+DEBUG_PROPAGATE_EXCEPTIONS = True
+
+
+ALLOWED_HOSTS = [
     '127.0.0.1',
     'ct-beauty-bookings-34c60b5072dd.herokuapp.com',
 ]
-
-raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
-
-if raw_hosts:
-    # split/strip any extra commas or spaces
-    hosts_from_env = [h.strip() for h in raw_hosts.split(',') if h.strip()]
-    ALLOWED_HOSTS = list(set(DEFAULT_HOSTS + hosts_from_env))
-else:
-    ALLOWED_HOSTS = DEFAULT_HOSTS
-
 
 # Application definition
 
@@ -182,7 +175,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 
 AUTHENTICATION_BACKENDS = [
