@@ -11,7 +11,7 @@ def regenerate_block_slots(sender, instance, **kwargs):
     Any time a block is saved or its weekdays change,
     walk the date range and generate slots (duplicates skipped).
     """
-    # pull out the weekday numbers the admin selected
+
     weekdays = set(instance.days_of_week.values_list('number', flat=True))
 
     current = instance.start_date
@@ -21,6 +21,6 @@ def regenerate_block_slots(sender, instance, **kwargs):
                 date=current,
                 start_time=instance.start_time,
                 end_time=instance.end_time,
-                slot_minutes=30,  # or 15 if you prefer
+                slot_minutes=30,
             )
         current += datetime.timedelta(days=1)
