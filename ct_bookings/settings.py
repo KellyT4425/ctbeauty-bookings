@@ -22,18 +22,30 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# Load .env (dev only)
 env_path = BASE_DIR / '.env'
 if env_path.exists():
     load_dotenv(env_path)
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Added DEBUG False to Heroku Config Vars
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-please-change')
 DEBUG      = os.environ.get('DEBUG', 'False') == 'True'
 
+# Always allow localhost + your Heroku domain, plus any extra from ALLOWED_HOSTS env var
+DEFAULT_HOSTS = [
+    '127.0.0.1',
+    'ct-beauty-bookings-34c60b5072dd.herokuapp.com',
+]
+
 raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
+
+if raw_hosts:
+    # split/strip any extra commas or spaces
+    hosts_from_env = [h.strip() for h in raw_hosts.split(',') if h.strip()]
+    ALLOWED_HOSTS = list(set(DEFAULT_HOSTS + hosts_from_env))
+else:
+    ALLOWED_HOSTS = DEFAULT_HOSTS
+
 
 # Application definition
 
@@ -45,10 +57,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
     'allauth',
     'allauth.account',
+
     'crispy_forms',
     'crispy_bootstrap5',
+
     'bookings.apps.BookingsConfig',
     'django_summernote',
     'services',
