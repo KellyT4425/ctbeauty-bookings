@@ -29,7 +29,7 @@ if env_path.exists():
     load_dotenv(env_path)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-please-change')
 DEBUG      = os.environ.get('DEBUG', 'False') == 'True'
 
 raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
