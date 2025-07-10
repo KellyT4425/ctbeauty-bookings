@@ -15,10 +15,11 @@ from pathlib import Path
 import os
 from decouple import AutoConfig, Csv
 import dj_database_url
-if os.path.isfile('env.py'):
-    import env
+from dotenv import load_dotenv
 from datetime import timedelta
 
+raw_hosts = os.environ.get('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -106,6 +107,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ct_bookings.wsgi.application'
+
+env_path = BASE_DIR / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
 
 
 # Database
