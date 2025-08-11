@@ -23,7 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("services/", include("services.urls", namespace="services")),
     path("bookings/", include("bookings.urls", namespace="bookings")),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path("accounts/", include("allauth.urls")),
     path("", service_views.home, name="home"),
     path('summernote/', include('django_summernote.urls')),
 

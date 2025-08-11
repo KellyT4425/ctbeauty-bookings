@@ -29,11 +29,7 @@ if dotenv_path.exists():
 SECRET_KEY = os.environ.get('SECRET_KEY', 'pzWq-IWf_4eOlHE_P1L_W0wxJuwR9M0k_qAc6nNNugM')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False   # ← change to True for local dev, False for Heroku
-
-# When DEBUG=False, force exceptions to bubble up so you can see them in runserver
-DEBUG_PROPAGATE_EXCEPTIONS = True
-
+DEBUG = True   # ← change to True for local dev, False for Heroku
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -53,6 +49,7 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
 
     'crispy_forms',
     'crispy_bootstrap5',

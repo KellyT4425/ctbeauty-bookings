@@ -1,5 +1,10 @@
 from . import views
 from django.urls import path
+"""
+URL configuration for the bookings app.
+
+Defines routes for creating, listing, viewing detail, and cancelling bookings.
+"""
 
 app_name = 'bookings'
 

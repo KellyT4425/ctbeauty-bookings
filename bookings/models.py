@@ -21,6 +21,22 @@ WEEKDAY_CHOICES = [
     ]
 
 class Availability(models.Model):
+    """
+    Represents a single time slot on a calendar date, tracking whether it
+    can be booked, is already booked, or has been marked unavailable.
+
+    Fields:
+        date (date):
+            The calendar date for this slot. Defaults to today.
+        start_time (time):
+            The start time of the slot.
+        end_time (time):
+            The end time of the slot.
+        unavailable (bool):
+            If True, this slot cannot be booked (e.g. a blackout period).
+        is_booked (bool):
+            If True, this slot has already been booked by a user.
+    """
     date = models.DateField(default=datetime.date.today)
 
     start_time = models.TimeField()
@@ -36,6 +52,16 @@ class Availability(models.Model):
         return f"{self.date} {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')} ({status})"
 
 class Weekday(models.Model):
+    """
+    Represents a day of the week by its numeric code and name.
+
+    Fields:
+        number (int):
+            The numeric identifier for the weekday (e.g., 0=Monday, 6=Sunday),
+            constrained by WEEKDAY_CHOICES and unique across entries.
+        name (str):
+            The human-readable name of the weekday (e.g., "Monday"), up to 9 characters.
+    """
     number = models.IntegerField(choices=WEEKDAY_CHOICES, unique=True)
     name   = models.CharField(max_length=9)
 
@@ -43,6 +69,28 @@ class Weekday(models.Model):
         return self.name
 
 class AvailabilityBlock(models.Model):
+    """
+    Defines a recurring time block over a date range and specific weekdays.
+
+    Fields:
+        start_date (date):
+            The first calendar date on which this block becomes active.
+            Defaults to today's date.
+        end_date (date):
+            The last calendar date on which this block remains active.
+            Defaults to today's date.
+        start_time (time):
+            The daily starting time of the block.
+        end_time (time):
+            The daily ending time of the block.
+        days_of_week (ManyToMany[Weekday]):
+            The set of weekdays on which this block applies. If empty,
+            the block is considered for all days in the date range.
+
+    __str__:
+        Returns a human-readable description including date range,
+        time interval, and the names of the applicable weekdays.
+    """
     start_date   = models.DateField(default=datetime.date.today)
     end_date     = models.DateField(default=datetime.date.today)
     start_time = models.TimeField()
@@ -62,6 +110,42 @@ class AvailabilityBlock(models.Model):
 
 
 class Booking(models.Model):
+    """
+    Represents a user’s appointment booking for a specific availability slot.
+
+    Fields:
+        user (ForeignKey to AUTH_USER_MODEL):
+            The user who made the booking. Deleting the user cascades to their bookings.
+        availability (OneToOneField to Availability):
+            The pre-generated time slot occupied by this booking. Protected from deletion.
+        treatment (ForeignKey to services.Treatment):
+            The selected treatment for this booking. Protected from deletion.
+        notes (TextField):
+            Optional free-form notes provided by the user.
+        created_at (DateTimeField):
+            Timestamp when this booking was first created.
+        updated_at (DateTimeField):
+            Timestamp when this booking was last modified.
+        status (CharField):
+            Current status of the booking; one of STATUS_CHOICES, defaults to 'PENDING'.
+
+    Meta:
+        ordering:  Newest bookings first (descending created_at).
+        verbose_name: 'Booking'
+        verbose_name_plural: 'Bookings'
+
+    __str__:
+        Returns a concise description including user, treatment, date, and start time.
+
+    Methods:
+        has_conflict(cls, date, start_time, end_time, exclude_booking_id=None):
+            Class method to detect overlap between a proposed time range and existing bookings
+            on the same date, optionally excluding one booking (e.g. when editing).
+
+        clean(self):
+            Model validation hook that raises a ValidationError if the chosen slot
+            is already marked as booked.
+    """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")
     # each slot can only be booked once
