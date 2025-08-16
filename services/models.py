@@ -29,7 +29,7 @@ class Treatment(models.Model):
         Category, on_delete=models.CASCADE, related_name="treatments")
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=300)
-    duration = models.DecimalField(max_digits=6, decimal_places=2)
+    duration = models.IntegerField(help_text="Duration in minutes")
     price = models.DecimalField(max_digits=6, decimal_places=2)
     slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
 

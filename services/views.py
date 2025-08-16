@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Category
 
 # Create your views here.
 """
@@ -33,14 +33,18 @@ Render a detail page that shows the fields and a “Book this service” button 
 
 """
 
-def treatment_list(request):
-    """TODO: list all treatments by category"""
-    return HttpResponse("⚙️ Treatment list coming soon…")
-
-
-def treatment_detail(request, slug):
-    """TODO: show one treatment’s detail"""
-    return HttpResponse(f"⚙️ Treatment detail for “{slug}” coming soon…")
-
 def home(request):
+    """
+    Simple landing/homepage view.
+    """
     return render(request, 'home.html')
+
+
+def services_list(request):
+    """
+    Display all service categories with their treatments/prices.
+    """
+    categories = Category.objects.prefetch_related('treatments')
+    return render(request, 'services/services_list.html', {
+        'categories': categories
+    })

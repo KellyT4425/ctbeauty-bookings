@@ -3,99 +3,102 @@ from django.contrib.auth.decorators import login_required
 from .models import Booking, Availability
 from .forms import BookingForm
 
+
 @login_required
 def make_booking(request):
     """
-    Display and process the booking creation form.
-
-    - If the request is GET: render an empty BookingForm.
-    - If the request is POST and the form is valid:
-        • Associate the new Booking with the logged-in user.
-        • Mark the selected Availability slot as booked.
-        • Save both the slot and Booking.
-        • Redirect to the bookings list page.
-
-    Args:
-        request (HttpRequest): The incoming HTTP request.
-
-    Returns:
-        HttpResponse: Rendered booking form on GET or invalid POST;
-                      a redirect to 'bookings:list' on successful booking.
+    Display and process the booking form.
+    - GET: empty form (optionally pre-filtered by category).
+    - POST: create a booking, attach user, and mark slot as booked.
     """
-    form = BookingForm(request.POST or None)
-    if form.is_valid():
-        booking = form.save(commit=False)
-        booking.user = request.user
-        # mark the slot taken
-        slot = booking.availability
-        slot.is_booked = True
-        slot.save()
-        booking.save()
-        return redirect('bookings:list')
-    return render(request, 'bookings/booking_form.html', {'form': form})
+    category_id = request.POST.get('category') or request.GET.get('category')
 
+    if request.method == 'POST':
+        form = BookingForm(request.POST, category_id=category_id)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+
+            # mark selected slot as taken
+            if booking.availability:
+                slot = booking.availability
+                slot.is_booked = True
+                slot.save()
+
+            booking.save()
+            return redirect('bookings:list')
+    else:
+        form = BookingForm(category_id=category_id)
+
+    return render(request, 'bookings/booking_form.html', {
+        'form': form,
+        'category_id': category_id
+    })
+
+
+# EDIT EXISTING BOOKING
+@login_required
+def edit_booking(request, pk):
+    """
+    Edit an existing booking owned by the user.
+    Allows re-selecting treatment, slot, or notes.
+    """
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    category_id = request.POST.get('category') or booking.treatment.category.pk
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST, instance=booking, category_id=category_id)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.save()
+            return redirect('bookings:list')
+    else:
+        form = BookingForm(instance=booking, category_id=category_id)
+
+    return render(request, 'bookings/booking_form.html', {
+        'form': form,
+        'category_id': category_id,
+        'edit': True
+    })
+
+
+# LIST BOOKINGS
 @login_required
 def my_bookings(request):
-    """
-    List all bookings made by the current user.
+    bookings = Booking.objects.filter(
+        user=request.user).select_related('availability', 'treatment')
+    return render(request, 'bookings/booking_list.html', {
+        'bookings': bookings
+    })
 
-    Fetches Booking objects belonging to request.user, including
-    related Availability and Treatment to avoid extra queries,
-    then renders them in the booking list template.
 
-    Args:
-        request (HttpRequest): The incoming HTTP request.
 
-    Returns:
-        HttpResponse: Rendered booking list page for the user.
-    """
-    bookings = Booking.objects.filter(user=request.user).select_related('availability', 'treatment')
-    return render(request, 'bookings/booking_list.html', {'bookings': bookings})
-
+# VIEW SINGLE BOOKING
 @login_required
 def booking_detail(request, pk):
-    """
-    Display the details for a single booking.
-
-    Retrieves a Booking by primary key that belongs to the current user,
-    or raises a 404 if not found, then renders the booking detail template.
-
-    Args:
-        request (HttpRequest): The incoming HTTP request.
-        pk (int): Primary key of the Booking to display.
-
-    Returns:
-        HttpResponse: Rendered booking detail page.
-    """
     booking = get_object_or_404(Booking, pk=pk, user=request.user)
-    return render(request, 'bookings/booking_detail.html', {'booking': booking})
+    return render(request, 'bookings/booking_detail.html', {
+        'booking': booking
+    })
 
+
+# CANCEL BOOKING
 @login_required
 def cancel_booking(request, pk):
-    """
-    Confirm and process cancellation of an existing booking.
-
-    - On GET: render a confirmation page.
-    - On POST: mark the associated Availability slot as free,
-      delete the Booking, then redirect to the bookings list.
-
-    Args:
-        request (HttpRequest): The incoming HTTP request.
-        pk (int): Primary key of the Booking to cancel.
-
-    Returns:
-        HttpResponse: Rendered confirmation page on GET or invalid POST;
-                      redirect to 'bookings:list' after cancellation.
-    """
     booking = get_object_or_404(Booking, pk=pk, user=request.user)
+
     if request.method == 'POST':
-        # free up the slot
-        slot = booking.availability
-        slot.is_booked = False
-        slot.save()
+        if booking.availability:
+            slot = booking.availability
+            slot.is_booked = False
+            slot.save()
         booking.delete()
         return redirect('bookings:list')
+
     return render(request, 'bookings/booking_confirm_cancel.html', {'booking': booking})
+
+
 
 """
 B. Bookings app views

@@ -1,21 +1,40 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Your Bookings{% endblock title %}
+{% block title %}My Bookings{% endblock %}
+
 {% block content %}
-  <h1>Your Bookings</h1>
+<div class="container py-4">
+  <h1 class="mb-4">My Bookings</h1>
+
   {% if bookings %}
-    <ul>
-      {% for b in bookings %}
-        <li>
-    <a href="{% url 'bookings:detail' b.pk %}">
-      {{ b.availability.date }} @ {{ b.availability.start_time }}
-      ({{ b.treatment }})
-    </a>
-    – <a href="{% url 'bookings:cancel' b.pk %}">Cancel</a>
-  </li>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Treatment</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for booking in bookings %}
+        <tr>
+          <td>{{ booking.treatment.name }}</td>
+          <td>{{ booking.availability.date }}</td>
+          <td>{{ booking.availability.start_time }} – {{ booking.availability.end_time }}</td>
+          <td>{{ booking.get_status_display }}</td>
+          <td>
+            <a href="{% url 'bookings:edit' booking.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'bookings:cancel' booking.pk %}" class="btn btn-sm btn-danger">Cancel</a>
+          </td>
+        </tr>
       {% endfor %}
-    </ul>
+      </tbody>
+    </table>
   {% else %}
-    <p>No upcoming bookings.</p>
+    <p>You have no bookings yet.</p>
   {% endif %}
-{% endblock content %}
+</div>
+{% endblock %}

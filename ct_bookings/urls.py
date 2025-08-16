@@ -21,7 +21,7 @@ from services import views as service_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("services/", include("services.urls", namespace="services")),
+    path('services/', include('services.urls')),
     path("bookings/", include("bookings.urls", namespace="bookings")),
     path("accounts/", include("allauth.urls")),
     path("", service_views.home, name="home"),

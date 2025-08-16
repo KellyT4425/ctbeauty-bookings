@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.core.exceptions import ValidationError
 import datetime
 
 # Create your models here.
@@ -41,6 +42,7 @@ class Availability(models.Model):
 
     start_time = models.TimeField()
     end_time = models.TimeField()
+    duration = models.IntegerField(help_text="Duration in minutes")
 
     unavailable = models.BooleanField(
         default=False, help_text="Mark this slot as unavailable for booking.")
@@ -194,9 +196,5 @@ class Booking(models.Model):
                 return False
 
     def clean(self):
-        """Django calls this to validate the model before saving"""
-        from django.core.exceptions import ValidationError
-
-        if self.availability.is_booked:
-            raise ValidationError(
-                "This time slot conflicts with an existing booking.")
+        if self.availability and self.availability.is_booked:
+            raise ValidationError("This time slot conflicts with an existing booking.")
