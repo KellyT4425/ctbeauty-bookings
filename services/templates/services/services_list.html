@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %}
 {% block content %}
 
 <h1 class="mb-4">Our Services</h1>
 
 {% for category in categories %}
-  <h3>{{ category.name }}</h3>
-  <table class="table table-striped mb-4">
+  <h3 class="category-heading">{{ category.name }}</h3>
+  <table class="table table-striped mb-4 tb-services">
     <thead>
       <tr>
         <th>Service</th>

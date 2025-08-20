@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -38,7 +38,7 @@
     {{ form.availability|as_crispy_field }}
     {{ form.notes|as_crispy_field }}
 
-    <button type="submit" class="btn btn-primary" disabled>Book Now</button>
+    <button type="submit" class="btn btn-primary book-btn" disabled>Book Now</button>
   </form>
 
   <!-- disable submit button until availability selected -->

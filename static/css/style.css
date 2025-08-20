@@ -1,161 +1,84 @@
 body {
-  background-color: #f9fafc;
+  background-color: #e3dad2;
+  font-family: "Baskervville", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.brand {
-  font-family: Lato, sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #4a4a4f;
+h1,
+h2,
+h3 {
+  font-family: "Fredericka the Great", serif;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 2px;
 }
 
-.red-o {
-  color: #e84610;
+/* BASE TEMPLATE */
+.navbar-brand {
+  margin: 0px;
 }
 
-.thin {
-  font-weight: 300;
+main {
+  flex: 1;
 }
 
-.light-bg {
-  background-color: #fff;
+.page-wrapper {
+  min-height: 100vh; /* make body at least the full screen height */
+  display: flex;
+  flex-direction: column; /* stack content vertically */
 }
 
-.dark-bg {
-  background-color: #445261;
+.page-wrapper > footer {
+  margin-top: auto; /* push footer to the bottom */
 }
 
-.main-bg {
-  background-color: #f9fafc;
+footer .navbar-nav .nav-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
-.card {
-  border: none;
-  background-color: transparent;
+footer .navbar-nav {
+  padding: 20px 0 20px 0;
 }
 
-.image-container {
-  position: relative;
+/* BOOKING LIST TEMPLATE */
+
+.btn-warning {
+  background-color: #555350;
+  border: 0;
+  color: #e3dad2;
+  letter-spacing: 1px;
 }
 
-.image-flash {
-  position: absolute;
-  bottom: 5%;
-  min-width: 30%;
-  left: -2px;
-  background-color: #188181;
+.btn-danger {
+  margin-top: 0.5rem;
+  background-color: #e3dad2;
+  border: 0;
+  letter-spacing: 1px;
+  color: #555350;
 }
 
-.scale {
-  width: 100%;
-  height: auto;
+/* BOOKING FORM TEMPLATE */
+.book-btn {
+  background-color: #555350 !important;
+  border: none !important;
+  color: #e3dad2 !important;
+  font-weight: 300 !important;
 }
 
-.author {
-  color: white;
-  margin: 4px;
-  text-transform: uppercase;
+/* SERVICES TEMPLATE */
+.tb-services th {
+  color: #555350;
 }
 
-.masthead {
-  margin-top: 10px;
-  overflow: hidden;
-  position: relative;
-  display: inline-block;
-  height: 33vh;
-  width: 100%;
+.tb-services td {
+  padding: 12px;
+  vertical-align: top;
 }
 
-.masthead-text {
-  background-color: #445261;
-  color: white;
-  position: relative;
-}
-
-.masthead-image {
-  position: relative;
-  overflow: hidden;
-}
-
-.masthead-image:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 90%;
-  height: 100%;
-  width: 150%;
-  background: #445261;
-  -webkit-transform: skew(15deg);
-  -moz-transform: skew(15deg);
-  transform: skew(15deg);
-  z-index: 100;
-}
-
-.post-link {
-  text-decoration: none;
-  color: #445261;
-}
-
-.post-link:hover,
-.page-link {
-  color: #e84610;
-}
-
-.post-title {
-  margin-top: 10%;
-  margin-left: 5%;
-}
-
-.post-subtitle {
-  margin-left: 5%;
-  color: lightgray;
-}
-
-.btn-signup,
-.btn-edit {
-  background-color: #188181;
-  color: #fff;
-}
-
-.btn-signup:hover,
-.btn-signup:active {
-  background-color: #fff;
-  color: #23bbbb;
-}
-
-.link {
-  color: #23bbbb;
-  text-decoration: none;
-}
-
-.link:hover,
-.link:active {
-  color: #445261;
-  text-decoration: underline;
-}
-
-.btn-like {
-  color: #e84610;
-  border: none;
-  background: transparent;
-}
-
-.btn-delete {
-  color: #fff;
-  background: #e84610;
-}
-
-.btn-like:hover,
-.btn-like:active {
-  color: #e84610;
-  background: transparent;
-  border: none;
-}
-
-.faded {
-  color: rgb(172, 175, 175);
-}
-
-.approval {
-  color: rgb(222, 146, 168);
+.category-heading {
+  padding-left: 10px;
 }
