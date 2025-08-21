@@ -82,3 +82,35 @@ footer .navbar-nav {
 .category-heading {
   padding-left: 10px;
 }
+
+/* SIGN IN TEMPLATE */
+.btn-signup.right {
+  border: 1px solid #555350;
+  background-color: #555350 !important;
+  color: #fff !important;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* PASSWORD RESET TEMPLATE */
+.btn.reset,
+.btn-primary.reset {
+  border: 1px solid #555350;
+  background-color: #555350 !important;
+  color: #e3dad2 !important;
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-signup.right:hover,
+.btn-signup.right:focus {
+  filter: brightness(1.06);
+  outline: none;
+}
+
+.pw-reset {
+  padding-left: 10px;
+  padding-top: 10px;
+}
