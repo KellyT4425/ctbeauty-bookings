@@ -1,12 +1,39 @@
-{% extends "base.html" %} {% load static %}
+{% extends "base.html" %} {% load static %} {% block content %}
 
-{% block content %}
-<div class="container text-center mt-5 home">
-    <h1>Welcome to CT Beauty</h1>
-    <p>Explore our services and make a booking today!</p>
-</div>
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="min-height: 80vh"
+>
+  <div
+    class="card shadow-sm border-0 text-center"
+    style="max-width: 560px; width: 100%"
+  >
+    <div class="card-body p-4">
+      <h1 class="h1 mb-2">Welcome</h1>
+      <p class="text-muted mb-4">
+        Explore our services and make a booking today!
+      </p>
 
-<div>
-    <img >
+      <img
+        src="{% static 'images/CT-logo.jpg' %}"
+        {#
+        use
+        forward
+        slashes
+        #}
+        alt="CT Beauty logo"
+        class="img-fluid rounded-3 mb-4"
+      />
+
+      <div class="d-grid gap-2 mt-4">
+        <a class="btn btn-brand" href="{% url 'services:list' %}"
+          >Browse Services</a
+        >
+        <a class="btn btn-outline-brand" href="{% url 'bookings:create' %}"
+          >Make a Booking</a
+        >
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock content %}
+{% endblock %}

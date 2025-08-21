@@ -8,11 +8,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!--Meta tags for search engines-->
+    <!--Meta tags for search engines ENTER!!!!!!!!!!!-->
     <meta name="description" content="" />
     <meta name="keywords" content="" />
 
     <!--Favicon Links-->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'images/favicon-16x16.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'images/favicon-32x32.png' %}"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'images/apple-touch-icon.png' %}"
+    />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,7 +58,6 @@
 
     <!-- CSS Custom -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-
 
     <title>CT | Beauty</title>
   </head>
@@ -119,7 +135,7 @@
                   class="nav-link {% if request.path == login_url %}active{% endif %}"
                   aria-current="page"
                   href="{% url 'account_login' %}"
-                  >Login</a
+                  >Sign In</a
                 >
               </li>
               {% endif %}
@@ -172,5 +188,11 @@
       integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
       crossorigin="anonymous"
     ></script>
+
+    <!-- Site-wide JS -->
+    <script src="{% static 'js/main.js' %}" defer></script>
+
+    <!-- Page-specific JS hook -->
+    {% block page_js %}{% endblock %}
   </body>
 </html>

@@ -6,60 +6,59 @@ from .forms import BookingForm
 
 @login_required
 def make_booking(request):
-    """
-    Display and process the booking form.
-    - GET: empty form (optionally pre-filtered by category).
-    - POST: create a booking, attach user, and mark slot as booked.
-    """
-    category_id = request.POST.get('category') or request.GET.get('category')
+    category_id = request.POST.get("category") or request.GET.get("category")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = BookingForm(request.POST, category_id=category_id)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
-
-            # mark selected slot as taken
             if booking.availability:
                 slot = booking.availability
                 slot.is_booked = True
                 slot.save()
-
             booking.save()
-            return redirect('bookings:list')
+            return redirect("bookings:list")
     else:
-        form = BookingForm(category_id=category_id)
+        form = BookingForm(request.GET, category_id=category_id)
 
-    return render(request, 'bookings/booking_form.html', {
-        'form': form,
-        'category_id': category_id
+    return render(request, "bookings/booking_form.html", {
+        "form": form,
+        "category_id": category_id,
     })
-
 
 # EDIT EXISTING BOOKING
 @login_required
 def edit_booking(request, pk):
-    """
-    Edit an existing booking owned by the user.
-    Allows re-selecting treatment, slot, or notes.
-    """
     booking = get_object_or_404(Booking, pk=pk, user=request.user)
-    category_id = request.POST.get('category') or booking.treatment.category.pk
+    category_id = booking.treatment.category_id  # keep lists filtered correctly
 
-    if request.method == 'POST':
-        form = BookingForm(request.POST, instance=booking, category_id=category_id)
-        if form.is_valid():
-            booking = form.save(commit=False)
-            booking.user = request.user
-            booking.save()
-            return redirect('bookings:list')
-    else:
-        form = BookingForm(instance=booking, category_id=category_id)
+    form = BookingForm(
+        request.POST or None,
+        instance=booking,
+        category_id=category_id,
+        edit_only_availability=True,   # <- only availability can change
+    )
 
-    return render(request, 'bookings/booking_form.html', {
-        'form': form,
-        'category_id': category_id,
-        'edit': True
+    if request.method == "POST" and form.is_valid():
+        old_slot = booking.availability
+        booking = form.save(commit=False)
+        booking.user = request.user
+        new_slot = form.cleaned_data.get("availability")
+
+        if old_slot and new_slot and old_slot != new_slot:
+            old_slot.is_booked = False; old_slot.save()
+            new_slot.is_booked = True;  new_slot.save()
+        elif new_slot and (not old_slot or not old_slot.is_booked):
+            new_slot.is_booked = True; new_slot.save()
+
+        booking.save()
+        return redirect("bookings:list")
+
+    return render(request, "bookings/booking_form.html", {
+        "form": form,
+        "edit": True,
+        "category_id": category_id,
     })
 
 

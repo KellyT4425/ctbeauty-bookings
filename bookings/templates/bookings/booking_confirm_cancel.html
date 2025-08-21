@@ -1,13 +1,36 @@
-{% extends "base.html" %} {% load static %}
+{% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Cancel Booking{% endblock title %}
+{% block head_title %}{% trans "Cancel Booking" %}{% endblock head_title %}
+
 {% block content %}
-  <h1>Cancel Booking #{{ booking.pk }}</h1>
-  <p>Are you sure you want to cancel your booking on
-     {{ booking.availability.date }} at {{ booking.availability.start_time }}?</p>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, cancel</button>
-    <a href="{% url 'bookings:list' %}">No, go back</a>
-  </form>
+<div class="container my-5">
+  <div class="auth-card card shadow-sm mx-auto">
+    <div class="card-body p-4 text-center">
+      <h1 class="h3 mb-3">
+        {% trans "Cancel Booking" %} #{{ booking.id }}
+      </h1>
+
+      <p class="text-muted mb-4">
+        {% trans "Are you sure you want to cancel your booking on" %}
+        <strong>
+          {{ booking.availability.date|date:"M. d, Y" }}
+          {{ booking.availability.start_time|time:"P" }}
+          – {{ booking.availability.end_time|time:"P" }}
+        </strong>?
+      </p>
+
+      <form method="post" class="d-grid gap-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-brand">
+          {% trans "Yes, cancel" %}
+        </button>
+        <a href="{{ request.META.HTTP_REFERER|default:request.build_absolute_uri|default:'/' }}"
+           class="btn btn-outline-secondary">
+          {% trans "No, go back" %}
+        </a>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}

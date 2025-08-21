@@ -1,3 +1,4 @@
+/* GLOBAL */
 body {
   background-color: #e3dad2;
   font-family: "Baskervville", serif;
@@ -44,73 +45,11 @@ footer .navbar-nav {
   padding: 20px 0 20px 0;
 }
 
-/* BOOKING LIST TEMPLATE */
+/* HOME TEMPLATE */
 
-.btn-warning {
-  background-color: #555350;
-  border: 0;
-  color: #e3dad2;
-  letter-spacing: 1px;
-}
-
-.btn-danger {
-  margin-top: 0.5rem;
-  background-color: #e3dad2;
-  border: 0;
-  letter-spacing: 1px;
-  color: #555350;
-}
-
-/* BOOKING FORM TEMPLATE */
-.book-btn {
-  background-color: #555350 !important;
-  border: none !important;
-  color: #e3dad2 !important;
-  font-weight: 300 !important;
-}
-
-/* SERVICES TEMPLATE */
-.tb-services th {
-  color: #555350;
-}
-
-.tb-services td {
-  padding: 12px;
-  vertical-align: top;
-}
-
-.category-heading {
-  padding-left: 10px;
-}
-
-/* SIGN IN TEMPLATE */
-.btn-signup.right {
-  border: 1px solid #555350;
-  background-color: #555350 !important;
-  color: #fff !important;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* PASSWORD RESET TEMPLATE */
-.btn.reset,
-.btn-primary.reset {
-  border: 1px solid #555350;
-  background-color: #555350 !important;
-  color: #e3dad2 !important;
-  padding: 10px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-signup.right:hover,
-.btn-signup.right:focus {
-  filter: brightness(1.06);
-  outline: none;
-}
-
-.pw-reset {
-  padding-left: 10px;
-  padding-top: 10px;
+.btn-brand {
+  background-color: #cf9274;
+  border-color: #cf9274;
+  color: #fff;
+  border-radius: 0.5rem;
 }

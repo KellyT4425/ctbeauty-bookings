@@ -1,4 +1,22 @@
 {
-    "python-envs.pythonProjects": [],
-    "djlint.showInstallError": false
+  // General
+  "python-envs.pythonProjects": [],
+  "djlint.showInstallError": false,
+
+  // Treat templates as Django and use djLint
+  "files.associations": {
+    "**/templates/**/*.html": "django-html"
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": "monosans.djlint", // djLint extension ID
+    "editor.formatOnSave": true
+  },
+
+  // Optional: Emmet in Django templates
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  }
+
+  // (Optional) Keep Prettier for normal HTML files:
+  // "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
 }

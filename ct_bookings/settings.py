@@ -149,7 +149,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+# Django-allauth
+# Allow users to log in with either their username or their email
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = [
+    "username*",
+    "email*",
+    "first_name*",
+    "last_name*",
+    "password1*",
+    "password2*",
+]
+ACCOUNT_FORMS = {"signup": "core.forms.CustomSignupForm"}
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',       # PBKDF2 + SHA256

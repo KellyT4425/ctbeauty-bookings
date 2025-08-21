@@ -1,40 +1,47 @@
-{% extends "base.html" %} {% load static %}
-{% load static %}
+{% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}My Bookings{% endblock %}
+{% block head_title %}{% trans "My Bookings" %}{% endblock head_title %}
 
 {% block content %}
-<div class="container py-4">
-  <h1 class="mb-4">My Bookings</h1>
+<div class="container my-5">
+  <div class="auth-card card shadow-sm mx-auto">
+    <div class="card-body p-4">
+      <h1 class="h3 mb-3">{% trans "My Bookings" %}</h1>
 
-  {% if bookings %}
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Treatment</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for booking in bookings %}
-        <tr>
-          <td>{{ booking.treatment.name }}</td>
-          <td>{{ booking.availability.date }}</td>
-          <td>{{ booking.availability.start_time }} – {{ booking.availability.end_time }}</td>
-          <td>{{ booking.get_status_display }}</td>
-          <td>
-            <a href="{% url 'bookings:edit' booking.pk %}" class="btn btn-sm btn-warning">Edit</a>
-            <a href="{% url 'bookings:cancel' booking.pk %}" class="btn btn-sm btn-danger">Cancel</a>
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>You have no bookings yet.</p>
-  {% endif %}
+      {% if bookings %}
+        <div class="vstack gap-3">
+          {% for b in bookings %}
+            <div class="booking-row p-3 border rounded-3">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <div class="fw-semibold">{{ b.treatment.name }}</div>
+                  {% if b.availability %}
+                    <div class="text-muted small">
+                      {{ b.availability.date|date:"D d M" }}
+                      {{ b.availability.start_time|time:"H:i" }}–{{ b.availability.end_time|time:"H:i" }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="d-flex gap-2">
+                  <a class="btn btn-outline-secondary btn-sm" href="{% url 'bookings:detail' b.pk %}">Details</a>
+                  <a class="btn btn-outline-primary btn-sm"  href="{% url 'bookings:edit' b.pk %}">Edit</a>
+                  <a class="btn btn-outline-danger btn-sm"   href="{% url 'bookings:cancel' b.pk %}">Cancel</a>
+                </div>
+              </div>
+
+              {% if b.notes %}
+                <div class="mt-2 small text-muted">{{ b.notes|truncatechars:120 }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted mb-0">You have no bookings yet.</p>
+        <a class="btn btn-brand w-100 mt-3" href="{% url 'bookings:create' %}">Make a Booking</a>
+      {% endif %}
+    </div>
+  </div>
 </div>
-{% endblock %}
+{% endblock content %}

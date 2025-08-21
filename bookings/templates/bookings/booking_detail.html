@@ -1,52 +1,62 @@
-{% extends "base.html" %} {% load static %}
+{% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Booking #{{ booking.pk }} Details{% endblock title %}
+{% block head_title %}{% trans "Booking Details" %}{% endblock head_title %}
 
 {% block content %}
-  <h1>Booking Details</h1>
+<div class="container my-5">
+  <div class="auth-card card shadow-sm mx-auto">
+    <div class="card-body p-4">
+      <h1 class="h3 mb-3">{% trans "Booking Details" %}</h1>
 
-  <dl>
-    <dt>Booking ID</dt>
-    <dd>{{ booking.pk }}</dd>
+      <dl class="row mb-0">
+        <dt class="col-5 col-sm-4">{% trans "Booking ID" %}</dt>
+        <dd class="col-7 col-sm-8">{{ booking.id }}</dd>
 
-    <dt>Date</dt>
-    <dd>{{ booking.availability.date }}</dd>
+        <dt class="col-5 col-sm-4">{% trans "Date" %}</dt>
+        <dd class="col-7 col-sm-8">
+          {{ booking.availability.date|date:"M. d, Y" }}
+        </dd>
 
-    <dt>Time</dt>
-    <dd>
-      {{ booking.availability.start_time }} – {{ booking.availability.end_time }}
-    </dd>
+        <dt class="col-5 col-sm-4">{% trans "Time" %}</dt>
+        <dd class="col-7 col-sm-8">
+          {{ booking.availability.start_time|time:"P" }}
+          – {{ booking.availability.end_time|time:"P" }}
+        </dd>
 
-    <dt>Treatment</dt>
-    <dd>
-      {% if booking.treatment %}
-        {{ booking.treatment.name }}
-      {% else %}
-        <em>None selected</em>
-      {% endif %}
-    </dd>
+        <dt class="col-5 col-sm-4">{% trans "Treatment" %}</dt>
+        <dd class="col-7 col-sm-8">{{ booking.treatment.name }}</dd>
 
-    <dt>Notes</dt>
-    <dd>
-      {% if booking.notes %}
-        {{ booking.notes }}
-      {% else %}
-        <em>No notes</em>
-      {% endif %}
-    </dd>
+        <dt class="col-5 col-sm-4">{% trans "Notes" %}</dt>
+        <dd class="col-7 col-sm-8">
+          {% if booking.notes %}{{ booking.notes|linebreaksbr }}
+          {% else %}<span class="text-muted fst-italic">{% trans "No notes" %}</span>{% endif %}
+        </dd>
 
-    <dt>Status</dt>
-    <dd>{{ booking.get_status_display }}</dd>
+        <dt class="col-5 col-sm-4">{% trans "Status" %}</dt>
+        <dd class="col-7 col-sm-8">
+          {{ booking.get_status_display|default:"Pending" }}
+        </dd>
 
-    <dt>Created At</dt>
-    <dd>{{ booking.created_at|date:"DATETIME_FORMAT" }}</dd>
+        <dt class="col-5 col-sm-4">{% trans "Created At" %}</dt>
+        <dd class="col-7 col-sm-8">{{ booking.created_at|date:"M. d, Y, P" }}</dd>
 
-    <dt>Last Updated</dt>
-    <dd>{{ booking.updated_at|date:"DATETIME_FORMAT" }}</dd>
-  </dl>
+        <dt class="col-5 col-sm-4">{% trans "Last Updated" %}</dt>
+        <dd class="col-7 col-sm-8">{{ booking.updated_at|date:"M. d, Y, P" }}</dd>
+      </dl>
 
-  <p>
-    <a href="{% url 'bookings:cancel' booking.pk %}">Cancel this booking</a> |
-    <a href="{% url 'bookings:list' %}">Back to all bookings</a>
-  </p>
+      <div class="d-flex gap-2 mt-4">
+        <a class="btn btn-outline-secondary" href="{% url 'bookings:list' %}">
+          {% trans "Back to bookings" %}
+        </a>
+        <a class="btn btn-outline-primary" href="{% url 'bookings:edit' booking.pk %}">
+          {% trans "Edit" %}
+        </a>
+        <a class="btn btn-outline-danger" href="{% url 'bookings:cancel' booking.pk %}">
+          {% trans "Cancel" %}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
