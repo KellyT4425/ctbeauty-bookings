@@ -1,11 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Booking, Availability
+from .models import Booking
 from .forms import BookingForm
+from django.contrib import messages
+
 
 
 @login_required
 def make_booking(request):
+    """
+    Show and process the booking form.
+
+    GET: render form (category preselected via ?category=).
+    POST: validate, attach user, mark chosen slot booked, save, flash success,
+    then redirect to `bookings:list`; on errors, re-render with messages.
+    """
     category_id = request.POST.get("category") or request.GET.get("category")
 
     if request.method == "POST":
@@ -18,7 +27,16 @@ def make_booking(request):
                 slot.is_booked = True
                 slot.save()
             booking.save()
+            messages.success(
+                request,
+                f"Booking confirmed for {booking.treatment.name} on "
+                f"{booking.availability.date:%b %d, %Y} at "
+                f"{booking.availability.start_time:%H:%M}."
+            )
             return redirect("bookings:list")
+        else:
+            messages.error(request, "Please fix the errors below.")
+
     else:
         form = BookingForm(request.GET, category_id=category_id)
 
@@ -30,29 +48,36 @@ def make_booking(request):
 # EDIT EXISTING BOOKING
 @login_required
 def edit_booking(request, pk):
+    """
+    Let a user change only the booking's Availability.
+
+    Loads the booking, disables Category/Treatment/Notes via the form flag,
+    toggles old/new slot `is_booked` if the time changes, flashes success,
+    then redirects to `bookings:list`.
+    """
     booking = get_object_or_404(Booking, pk=pk, user=request.user)
-    category_id = booking.treatment.category_id  # keep lists filtered correctly
+    category_id = booking.treatment.category_id
+    old_slot = booking.availability
 
     form = BookingForm(
         request.POST or None,
         instance=booking,
         category_id=category_id,
-        edit_only_availability=True,   # <- only availability can change
+        edit_only_availability=True,
     )
 
     if request.method == "POST" and form.is_valid():
-        old_slot = booking.availability
-        booking = form.save(commit=False)
-        booking.user = request.user
+        updated = form.save(commit=False)
+        updated.user = request.user
         new_slot = form.cleaned_data.get("availability")
 
         if old_slot and new_slot and old_slot != new_slot:
-            old_slot.is_booked = False; old_slot.save()
-            new_slot.is_booked = True;  new_slot.save()
-        elif new_slot and (not old_slot or not old_slot.is_booked):
-            new_slot.is_booked = True; new_slot.save()
+            old_slot.is_booked = False; old_slot.save(update_fields=["is_booked"])
+            if not new_slot.is_booked:
+                new_slot.is_booked = True; new_slot.save(update_fields=["is_booked"])
 
-        booking.save()
+        updated.save()
+        messages.success(request, "Booking time updated.")
         return redirect("bookings:list")
 
     return render(request, "bookings/booking_form.html", {
@@ -65,6 +90,12 @@ def edit_booking(request, pk):
 # LIST BOOKINGS
 @login_required
 def my_bookings(request):
+    """
+    List the current user's bookings.
+
+    Uses `select_related('availability','treatment')` and renders
+    `bookings/booking_list.html`.
+    """
     bookings = Booking.objects.filter(
         user=request.user).select_related('availability', 'treatment')
     return render(request, 'bookings/booking_list.html', {
@@ -76,6 +107,11 @@ def my_bookings(request):
 # VIEW SINGLE BOOKING
 @login_required
 def booking_detail(request, pk):
+    """
+    Show a single booking owned by the user (404 if not found/not owned).
+
+    Renders `bookings/booking_detail.html`.
+    """
     booking = get_object_or_404(Booking, pk=pk, user=request.user)
     return render(request, 'bookings/booking_detail.html', {
         'booking': booking
@@ -85,99 +121,22 @@ def booking_detail(request, pk):
 # CANCEL BOOKING
 @login_required
 def cancel_booking(request, pk):
+    """
+    Cancel a booking and free its slot.
+
+    GET: confirm page. POST: set slot `is_booked=False`, delete booking,
+    flash success, redirect to `bookings:list`.
+    """
     booking = get_object_or_404(Booking, pk=pk, user=request.user)
 
     if request.method == 'POST':
+        # free slot, then delete
         if booking.availability:
             slot = booking.availability
             slot.is_booked = False
-            slot.save()
+            slot.save(update_fields=["is_booked"])
         booking.delete()
+        messages.success(request, "Your booking has been cancelled.")
         return redirect('bookings:list')
 
     return render(request, 'bookings/booking_confirm_cancel.html', {'booking': booking})
-
-
-
-"""
-B. Bookings app views
-1. make_booking
-URL: /bookings/make/
-
-Access: only for logged-in users (@login_required).
-
-Purpose: let the user pick an open time slot and create a booking.
-
-Steps:
-
-On GET:
-
-Query Availability for all slots where unavailable=False, is_booked=False, and date ≥ today.
-
-Instantiate your BookingForm, replacing its “availability” queryset with that list.
-
-Render the form template with { "form": form }.
-
-On POST:
-
-Bind BookingForm(request.POST).
-
-If valid:
-
-Call form.save(commit=False), attach form.instance.user = request.user, then form.save().
-
-Mark form.instance.availability.is_booked = True and save that slot.
-
-Redirect to a confirmation page or to My Bookings.
-
-If invalid: re-render the form with errors.
-
-2. my_bookings
-URL: /bookings/my/
-
-Access: logged-in only.
-
-Purpose: list all bookings made by the current user.
-
-Steps:
-
-Query Booking.objects.filter(user=request.user).order_by('-created_at').
-
-Pass them into template as { "bookings": bookings }.
-
-Template loops over each and displays the slot’s date/time, service name, status, and maybe a “Cancel” link.
-
-3. cancel_booking
-URL: /bookings/cancel/<pk>/
-
-Access: logged-in only.
-
-Purpose: allow a user to cancel one of their bookings.
-
-Steps:
-
-Lookup the Booking by pk and ensure booking.user == request.user (403 otherwise).
-
-Set booking.status = 'CANCELLED' (or delete it) and save.
-
-Also mark booking.availability.is_booked = False so the slot re-opens.
-
-Redirect back to My Bookings with a success message.
-
-C. Templates you’ll need
-services/treatment_list.html
-
-services/treatment_detail.html
-
-bookings/make.html (form)
-
-bookings/my.html (list)
-
-Optionally a bookings/confirm.html for a success page
-
-All should extend your base.html and live under templates/services/ or templates/bookings/.
-
-D. Forms
-
-
-"""

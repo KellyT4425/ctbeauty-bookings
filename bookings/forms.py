@@ -8,6 +8,15 @@ from .models import Booking, Availability
 from services.models import Category, Treatment
 
 class BookingForm(forms.ModelForm):
+    """
+    Booking form for create/edit.
+
+    Supports:
+    - optional category prefilter (`category_id`)
+    - edit-only mode (only Availability editable)
+    - future/free availability filtered by treatment duration
+    - crispy-forms layout and nicer slot labels
+    """
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(), required=False, empty_label="Select Category"
     )
@@ -21,6 +30,16 @@ class BookingForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the form.
+
+        - Reads `edit_only_availability` and `category_id` flags.
+        - Sets crispy helper/layout.
+        - Prefilters treatments by category (or instance on edit).
+        - Builds availability queryset: future, unbooked slots; filters by
+          selected treatment’s duration; applies readable option labels.
+        - In edit-only mode, disables Category/Treatment/Notes fields.
+        """
         self.edit_only_availability = kwargs.pop("edit_only_availability", False)
         selected_category = kwargs.pop("category_id", None)
         super().__init__(*args, **kwargs)
@@ -86,11 +105,14 @@ class BookingForm(forms.ModelForm):
                 if name in self.fields:
                     self.fields[name].disabled = True
                     self.fields[name].required = False
-                    # optional per-field hint:
-                    # self.fields[name].help_text = "Not editable on an existing booking."
+                    self.fields[name].help_text = "Not editable on an existing booking."
 
 
     def clean(self):
+        """
+        Server-side guard for edit-only mode:
+        prevent changes to Category/Treatment/Notes when editing.
+        """
         cleaned = super().clean()
         if self.edit_only_availability and self.instance and self.instance.pk:
             for name in ("category", "treatment", "notes"):

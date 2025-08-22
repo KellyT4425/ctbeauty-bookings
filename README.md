@@ -1,3 +1,9 @@
+![Hero Image](static/images/CT-logo.jpg)
+# CT Beauty: Salon Appointments Made Simple
+
+## Description
+
+
 ## Credits
 
 ### Django & Core Docs

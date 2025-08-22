@@ -8,25 +8,12 @@ from .utils import create_slots_for_date
 @receiver(m2m_changed, sender=AvailabilityBlock.days_of_week.through)
 def regenerate_block_slots(sender, instance, **kwargs):
     """
-    Signal handler for AvailabilityBlock changes.
+    Create/refresh 30-min Availability slots for an AvailabilityBlock.
 
-    Whenever an AvailabilityBlock is created, updated, or its associated
-    weekdays are modified, this function will:
-
-    1. Determine which weekdays (0=Monday…6=Sunday) the block applies to.
-    2. Iterate each date from `instance.start_date` through `instance.end_date`.
-    3. For each date that falls on one of the selected weekdays, call
-       `create_slots_for_date()` to generate 30-minute Availability slots
-       between `instance.start_time` and `instance.end_time`.
-    4. Skip any slots that already exist, avoiding duplicates.
-
-    Parameters:
-        sender (type): The model class sending the signal (AvailabilityBlock).
-        instance (AvailabilityBlock): The block instance that was saved or modified.
-        **kwargs: Additional keyword arguments provided by Django’s signal.
-
-    Returns:
-        None
+    On create/update (or weekday changes), iterate dates from start_date to
+    end_date; for dates matching the block’s weekdays, call
+    create_slots_for_date(start_time→end_time). Existing slots are skipped to
+    avoid duplicates.
     """
     weekdays = set(instance.days_of_week.values_list('number', flat=True))
 
