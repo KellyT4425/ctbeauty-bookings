@@ -133,9 +133,10 @@ WSGI_APPLICATION = 'ct_bookings.wsgi.application'
 #    }
 # }
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ['DATABASE_URL'],
-        conn_max_age=600,
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        ssl_require=True,   # force SSL
+        conn_max_age=0,     # avoid stale connections on Heroku/poolers
     )
 }
 
