@@ -72,7 +72,8 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@ctbeauty.local")
 
 SITE_ID = 1
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"   # "https" in production
+# settings.py
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get("ACCOUNT_PROTOCOL", "http")
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
