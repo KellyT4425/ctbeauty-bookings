@@ -64,86 +64,79 @@
 
   <body class="page-wrapper">
     <header>
-      <!-- Navigation Bar -->
-      <nav class="navbar bg-body-tertiary nav-img">
-        <div class="container-fluid">
-          <a class="navbar-brand">
-            <img
-              src="{% static 'images\android-chrome-192x192.png' %}"
-              alt="Logo"
-              width="90"
-              height="80"
-              class="d-inline-block align-text-top"
-            />
-          </a>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary nav-img">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img
+          src="{% static 'images/android-chrome-192x192.png' %}"
+          alt="Logo"
+          width="90"
+          height="80"
+          class="d-inline-block align-text-top"
+        />
+      </a>
 
-          <button
-            class="navbar-toggler d-md-none border-0"
-            type="button"
-            aria-label="Toggle navigation"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNav"
-            aria-controls="mainNav"
-            aria-expanded="false"
-          >
-            <img
-              class="burger-toggle toggle"
-              src="{% static 'images/NAV-TOGGLE2.png' %}"
-              alt="Menu"
-              height="40"
-              width="40"
-            />
-          </button>
+      <button
+        class="navbar-toggler border-0"
+        type="button"
+        aria-label="Toggle navigation"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNav"
+        aria-controls="mainNav"
+        aria-expanded="false"
+      >
+        <img
+          class="burger-toggle toggle"
+          src="{% static 'images/NAV-TOGGLE2.png' %}"
+          alt="Menu"
+          height="40"
+          width="40"
+        />
+      </button>
 
-          <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'services:list' %}"
-                  >Services</a
-                >
-              </li>
-              {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'bookings:create' %}"
-                  >Make a Booking</a
-                >
-                <a href="{% url 'bookings:list' %}">My Bookings</a>
-              </li>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto fs-5">
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-2 fw-semibold" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-2 fw-semibold" href="{% url 'services:list' %}">Services</a>
+          </li>
 
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path == logout_url %}active{% endif %}"
-                  aria-current="page"
-                  href="{% url 'account_logout' %}"
-                  >Logout</a
-                >
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path == signup_url %}active{% endif %}"
-                  aria-current="page"
-                  href="{% url 'account_signup' %}"
-                  >Register</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path == login_url %}active{% endif %}"
-                  aria-current="page"
-                  href="{% url 'account_login' %}"
-                  >Sign In</a
-                >
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link px-lg-3 py-2 fw-semibold" href="{% url 'bookings:create' %}">Make a Booking</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-lg-3 py-2 fw-semibold" href="{% url 'bookings:list' %}">My Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link px-lg-3 py-2 fw-semibold {% if request.path == logout_url %}active{% endif %}"
+                href="{% url 'account_logout' %}"
+              >Logout</a>
+            </li>
+          {% else %}
+            <li class="nav-item ">
+              <a
+                class="nav-link px-lg-3 py-2 fw-semibold {% if request.path == signup_url %}active{% endif %}"
+                href="{% url 'account_signup' %}"
+              >Register</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link px-lg-3 py-2 fw-semibold {% if request.path == login_url %}active{% endif %}"
+                href="{% url 'account_login' %}"
+              >Login</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
 
     <!-- Main Block -->
     <main>{% block content %}{% endblock content %}</main>
