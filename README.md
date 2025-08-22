@@ -1,8 +1,45 @@
 ![Hero Image](static/images/CT-logo.jpg)
 # CT Beauty: Salon Appointments Made Simple
 
-## Description
+## Project Description
 
+**CT Beauty** is a clean, responsive salon booking app — a **Django MVP** focused on the core experience: discover services, pick a treatment, and book a time slot with minimal friction. The UI is mobile-first (Bootstrap 5) with a calm, brand-led palette and accessible forms.
+
+### What it does
+- **Browse services** by category with clear descriptions, durations, and prices.
+- **Book a slot**: choose a treatment, then select an available time.
+- **Manage bookings (CRUD)**:
+  - **Create** a booking
+  - **Read** your upcoming bookings
+  - **Update** (reschedule) by changing availability
+  - **Delete** by cancelling the booking
+- **Secure auth**: sign up / sign in with **django-allauth** (username or email), strong password rules, and brute-force protection via **django-axes**.
+
+### How it works (at a glance)
+1. **Services & Treatments** are defined in the database (admin supports full CRUD).
+2. **Availability slots** represent bookable times; a **Booking** occupies one slot.
+3. **Users** authenticate via allauth; protected views handle booking **CRUD** (reschedule = update).
+4. The interface stays consistent across desktop, tablet, and mobile.
+
+> Goal: deliver a smooth, trustworthy booking experience with clear information, minimal friction, and consistent styling across pages.
+
+## Tech Stack
+
+| Layer                | Libraries / Tools                                  | Notes |
+|---------------------|-----------------------------------------------------|------|
+| **Backend**         | Django 4                                           | Core framework (MVP) |
+| **Authentication**  | django-allauth                                     | Username or email login, templates |
+| **Forms (server)**  | django-crispy-forms, crispy-bootstrap5             | Clean Bootstrap 5 form rendering |
+| **Frontend (client)** | Bootstrap 5, custom CSS, minimal JS               | Responsive UI, brand color `#CF9274` |
+| **Database**        | PostgreSQL, `dj-database-url`                      | DB config via environment variables |
+| **Static files**    | WhiteNoise                                         | Compressed static serving in prod |
+| **Security**        | django-axes                                        | Brute-force protection |
+| **Env/Config**      | python-dotenv                                      | Load `.env` in development |
+| **Quality/Tooling** | djLint, Conventional Commits                       | Template formatting & commit convention |
+
+## Entity Relationship Diagram (ERD)
+
+![CT Beauty ERD](static/images/ERD-Models.jpg)
 
 ## Credits
 
