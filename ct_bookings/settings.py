@@ -43,9 +43,10 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'ct-beauty-bookings-34c60b5072dd.herokuapp.com',
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://ct-beauty-bookings-34c60b5072dd.herokuapp.com",]
 
 # Application definition
-
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'django.contrib.admin',
@@ -80,7 +81,6 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@ctbeauty.local")
 
 SITE_ID = 1
-# settings.py
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get("ACCOUNT_PROTOCOL", "http")
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

@@ -1,9 +1,55 @@
+/* GLOBAL */
 body {
   background-color: #e3dad2;
-}
-
-h1 {
-  font-family: "Fredericka the Great", serif;
+  font-family: "Baskervville", serif;
+  font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Fredericka the Great", serif;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 2px;
+}
+
+/* BASE TEMPLATE */
+.navbar-brand {
+  margin: 0px;
+}
+
+main {
+  flex: 1;
+}
+
+.page-wrapper {
+  min-height: 100vh; /* make body at least the full screen height */
+  display: flex;
+  flex-direction: column; /* stack content vertically */
+}
+
+.page-wrapper > footer {
+  margin-top: auto; /* push footer to the bottom */
+}
+
+footer .navbar-nav .nav-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+footer .navbar-nav {
+  padding: 20px 0 20px 0;
+}
+
+/* HOME TEMPLATE */
+
+.btn-brand {
+  background-color: #cf9274;
+  border-color: #cf9274;
+  color: #fff;
+  border-radius: 0.5rem;
 }
