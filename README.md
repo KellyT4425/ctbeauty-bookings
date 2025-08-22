@@ -95,6 +95,7 @@
 
 ### Frontend
 - [Bootstrap 5](https://getbootstrap.com/docs/5.3/) — cards, tables, buttons, utilities
+- [Font Awesome]()
 
 ### Tools & Linters
 - [djLint](https://www.djlint.com/) — Django template formatter/linter
