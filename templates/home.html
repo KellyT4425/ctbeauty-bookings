@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
 <div
   class="container d-flex justify-content-center align-items-center"
@@ -9,7 +11,13 @@
     style="max-width: 560px; width: 100%"
   >
     <div class="card-body p-4">
-      <h1 class="h1 mb-2">Welcome</h1>
+      {% if user.is_authenticated %}
+      <h1 class="h1 mb-2">
+        Welcome {{ user.first_name|default:user.username }}!
+      </h1>
+      {% else %}
+      <h1 class="h1 mb-2">Welcome!</h1>
+      {% endif %}
       <p class="text-muted mb-4">
         Explore our services and make a booking today!
       </p>
