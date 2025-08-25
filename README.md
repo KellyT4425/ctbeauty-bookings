@@ -1,7 +1,10 @@
 ![Hero Image](static/images/CT-logo.jpg)
-# CT Beauty: Salon Appointments Made Simple
+# **CT Beauty: Salon Appointments Made Simple**
+[**Check it OUT!!!**](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
 
-## Project Description
+[**Github Repo**](https://github.com/KellyT4425/ctbeauty-bookings)
+
+## **Project Description**
 
 **CT Beauty** is a clean, responsive salon booking app — a **Django MVP** focused on the core experience: discover services, pick a treatment, and book a time slot with minimal friction. The UI is mobile-first (Bootstrap 5) with a calm, brand-led palette and accessible forms.
 
@@ -23,7 +26,7 @@
 
 > Goal: deliver a smooth, trustworthy booking experience with clear information, minimal friction, and consistent styling across pages.
 
-## Tech Stack
+## **Tech Stack** 💻
 
 | Layer                | Libraries / Tools                                  | Notes |
 |---------------------|-----------------------------------------------------|------|
@@ -37,11 +40,131 @@
 | **Env/Config**      | python-dotenv                                      | Load `.env` in development |
 | **Quality/Tooling** | djLint, Conventional Commits                       | Template formatting & commit convention |
 
-## Entity Relationship Diagram (ERD)
+## **User Stories**
+- **Milestone: Functional Booking System**.
+
+  **1.** As a logged-in user, I want to select a treatment, date, and time, So that I can schedule an appointment.
+
+  **2.** As a potential customer, I want to browse the available treatments, So that I can decide which service to book.
+
+  **3.** As a user, I want to see available dates and times, So that I can choose a suitable appointment slot.
+
+  **4.** As a logged-in user, I want to view a list of my upcoming appointments, So that I can keep track of them.
+
+  **5.** As a customer, I want to receive a booking success message, so that I know my booking is successful.
+
+  **6.** As a user, I want to cancel or change my booking, So that I can manage my schedule as needed.
+
+- **Milestone: Implementing User Registration and Login**.
+
+  **1.** As a new customer, I want to register an account, So that I can log in and make a booking for a treatment.
+
+  **2.** As a logged-in user, I want to log out of my account so that I can ensure my data is secure.
+
+  **3.** As a user who forgot my password, I want to reset it using my email, So that I can regain access to my account.
+
+  **4.** As a registered user, I want to log in to my account, so that I can access my personal dashboard and make or manage bookings.
+
+- **Milestone: Admin Privileges & Control Panel**.
+
+  **1.** As an admin, I want to view all upcoming bookings, So that I can prepare for upcoming appointments.
+
+  **2.** As an admin, I want to change or cancel bookings, So that I can manage conflicts or emergencies.
+
+  **3.** As an admin, I want to set my available working hours, So that customers can only book during those times.
+
+## **Entity Relationship Diagram (ERD)**
 
 ![CT Beauty ERD](static/images/ERD-Models.jpg)
 
-## Credits
+## **Entities**
+
+#### Category
+- Groups services (e.g., Brows, Lashes, Waxing).
+- Fields: `name`, `slug`.
+
+#### Treatment
+- A bookable service that belongs to a category.
+- Fields: name, description, duration (mins), price, slug.
+- FK: `category` → Category.
+
+#### Availability
+- A single bookable slot on a specfic date & time.
+- Fields: `date`, `start_time`, `end_time`, `duration`, `unavailable`, `is_booked`.
+
+#### AvailabilityBlock
+
+- Defines recurring opening hours across a date range.
+- Fields: `start_date`, `end_date`, `start_time`, `end_time`.
+- M2M: `days_of_week` → Weekday.
+- <em>Used by code to generate many Availability rows (no direct FK to slots)</em>.
+
+#### Weekday
+
+- Lookup for days of the week.
+- Fields: `number (0–6)`, `name`.
+
+> Note: AvailabilityBlock + Weekday are used to create the Availability schedule. This is a conceptual “generates” link handled in code, not a database FK.
+
+#### Booking
+
+- A user’s appointment for a specific slot & treatment.
+- Fields: `notes`, `status`, `created_at`, `updated_at`.
+- One-to-one: availability → Availability (each slot can be booked once).
+- FKs: `user` → User, treatment → Treatment.
+
+#### User
+
+- Django auth user (email/username) who makes bookings.
+
+### Integrity Rules
+
+- **No double-booking**: Booking ↔ Availability is one-to-one; chosen slot is set is_booked=True.
+
+- **Future & duration-matched**: only future slots that match the treatment’s duration are offered.
+
+- **Delete behaviour**:
+  * Booking.user → CASCADE (deleting a user removes their bookings).
+  * Booking.treatment, Booking.availability → PROTECT (avoid orphaned bookings).
+
+### Typical Flow
+
+**1.** Admin creates AvailabilityBlocks (e.g., Mon–Fri 09:00–17:00 for a month) → app generates Availability slots.
+
+**2.** User selects a Treatment; form lists only future, duration-compatible slots.
+
+**3.** On submit, a Booking is created and the chosen Availability is marked booked.
+
+**4.** When rescheduling, only the availability (time) is changed; the previous slot is freed.
+
+## **Design**
+
+## **Testing**
+
+
+## **Deployment** 🚀
+[Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
+
+The project was deployed to Heroku using the following steps:
+
+1. Sign in to Heroku and access the dashboard.
+2. In the top right corner, click the **"New"** dropdown menu and then click **"Create new app"**.
+3. Choose a name for your app, then change your region accordingly.
+4. Click **"Create app"**.
+5. On the next page that loads after clicking **"Create app"**, click **"Settings"** in the top navigation bar.
+6. Click on **"Reveal Config Vars"**.
+7. Add a new Config Var: type **'PORT'** in the **'KEY'** section, and type **'8000'** into the **'VALUE'** section, then click **"Add"**.
+8. Next, scroll down to the **"Buildpack"** section and click **"Add buildpack"** they must be in order <em>heroku/python</em> then <em>heroku/nodejs</em> after.
+9. In the top navigation bar, click the **"Deploy"** tab.
+10. In the **"Deployment Method"** section, click on GitHub to connect to your GitHub account.
+11. After logging into your GitHub account, search for your GitHub repository name (for this project, it was **"slot-royale"**).
+12. Click on the repository once found to connect it.
+13. Scroll down to the section **"Automatic Deploys"** and click on the **"Enable Automatic Deploys"** button
+Then underneath, make sure the branch for the project is **"main"** and click on the **"Deploy"** button
+Wait for Heroku to display that the app was deployed successfully.
+1.  You can also choose **"manual deploy"**.
+
+## **Credits**
 
 ### Django & Core Docs
 - [Django Documentation](https://docs.djangoproject.com/en/4.2/) — general reference
@@ -99,7 +222,11 @@
 
 ### Tools & Linters
 - [djLint](https://www.djlint.com/) — Django template formatter/linter
+- [Lucid Chart](https://www.lucidchart.com/blog/automate-your-work-with-lucidchart) was used to create the ERD.
 
 ### Optional (used in this project)
 - [django-axes](https://django-axes.readthedocs.io/) — brute-force protection
 - [django-summernote](https://github.com/summernote/django-summernote) — rich text editor
+
+### Support & Guidance
+[Mentor](https://www.linkedin.com/in/hamiltondl/) Daniel Hamilton through each step in development, and on into production provided
