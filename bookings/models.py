@@ -125,10 +125,10 @@ class Booking(models.Model):
         Don’t allow picking an Availability that already belongs to a *different* booking.
         Allow saving when it's the same row (so admin can change status without errors).
         """
-        try:
-            other = self.availability.booking
-        except Booking.DoesNotExist:
-            other = None
+        slot_id = self.availability_id
+        if not slot_id:
+            return
 
-        if other and other.pk != self.pk:
+        clash = Booking.objects.filter(availability_id=slot_id).exclude(pk=self.pk).exists()
+        if clash:
             raise ValidationError({"availability": "This time slot is already booked."})
