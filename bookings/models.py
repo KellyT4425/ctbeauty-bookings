@@ -114,19 +114,21 @@ class Booking(models.Model):
 
     def __str__(self):
         slot = self.availability
+        t = self.treatment or "No treatment"
         if not slot:
-            return f"Booking for {self.user} (no slot)"
+            return f"Booking for {self.user} ({t}, no slot)"
 
-        return f"Booking for {self.user} - {self.treatment} on {slot.date} from {slot.start_time:%H:%M}"
+        return f"Booking for {self.user} - {t} on {slot.date} from {slot.start_time:%H:%M}"
 
     def clean(self):
         """
         Don’t allow picking an Availability that already belongs to a *different* booking.
         Allow saving when it's the same row (so admin can change status without errors).
         """
-        if not self.availability_id:
-            return
+        try:
+            other = self.availability.booking
+        except Booking.DoesNotExist:
+            other = None
 
-        if hasattr(self.availability, "booking"):
-            if self.availability.booking_id != self.pk:
-                raise ValidationError({"availability": "This time slot is already booked."})
+        if other and other.pk != self.pk:
+            raise ValidationError({"availability": "This time slot is already booked."})
