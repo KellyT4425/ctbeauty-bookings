@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from .models import Availability, AvailabilityBlock, Booking, Weekday
 
 @admin.register(Weekday)
@@ -30,6 +30,15 @@ class AvailabilityBlockAdmin(admin.ModelAdmin):
         return ", ".join(d.name for d in obj.days_of_week.all())
     display_days.short_description = "Days of week"
 
+@admin.action(description="Confirm selected bookings")
+def confirm_bookings(modeladmin, request, queryset):
+    updated = queryset.update(status=Booking.Status.APPROVED)
+    modeladmin.message_user(request, f"Approved {updated} booking(s).", level=messages.SUCCESS)
+
+@admin.action(description="Cancel selected bookings")
+def cancel_bookings(modeladmin, request, queryset):
+    updated = queryset.update(status=Booking.Status.CANCELLED)
+    modeladmin.message_user(request, f"Cancelled {updated} booking(s).", level=messages.WARNING)
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     """

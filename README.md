@@ -141,8 +141,15 @@
 
 ## **Accessibility**
 
-## **Testing**
+## **Validation** 🔍
 
+[CI Python Linter](https://pep8ci.herokuapp.com/#)
+
+> **CI Python Linter**.
+
+![Validation](images-readme/python-linter.png)
+
+I also used [Python Tutor](https://pythontutor.com/) throughout the development
 
 ## **Deployment** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)

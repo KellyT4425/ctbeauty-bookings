@@ -1,10 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.exceptions import ValidationError
 import datetime
 
-# Create your models here.
 STATUS_CHOICES = [
     ('PENDING',   'Pending'),
     ('CONFIRMED', 'Confirmed'),
@@ -77,58 +75,58 @@ class AvailabilityBlock(models.Model):
 class Booking(models.Model):
     """
     A user’s appointment occupying one Availability slot for a Treatment.
-    Includes optional notes, timestamps, and a simple status.
     """
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")
-    # each slot can only be booked once
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="bookings"
+    )
+
     availability = models.OneToOneField(
         Availability,
         on_delete=models.PROTECT,
         related_name="booking",
         null=True, blank=True,
-        help_text="Which pre‐generated slot this booking occupies."
+        help_text="Which pre-generated slot this booking occupies."
     )
+
     treatment = models.ForeignKey(
-        'services.Treatment', on_delete=models.PROTECT, null=True,
-    blank=True, related_name='bookings')
+        "services.Treatment",
+        on_delete=models.PROTECT,
+        null=True, blank=True,
+        related_name="bookings"
+    )
+
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at  = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    updated_at = models.DateTimeField(auto_now=True)
 
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default="pending",
+        db_index=True,
+    )
     class Meta:
-        ordering = ['-created_at']
-        verbose_name = 'Booking'
-        verbose_name_plural = 'Bookings'
-
+        ordering = ["-created_at"]
+        verbose_name = "Booking"
+        verbose_name_plural = "Bookings"
 
     def __str__(self):
-        """Concise summary: user, treatment, date and start time."""
         slot = self.availability
-        return (f"Booking for {self.user} - {self.treatment} on "
-                f"{slot.date} from {slot.start_time.strftime('%H:%M')}")
+        if not slot:
+            return f"Booking for {self.user} (no slot)"
 
-    @classmethod
-    # checking all bookings so cls is used instead of self.
-    def has_conflict(cls, date, start_time, end_time, exclude_booking_id=None):
-        """Return True if the proposed time overlaps an existing booking on `date`."""
-        # check to see if a new booking would conflict with existing bookings
-        existing_bookings = cls.objects.filter(date=date)
-
-        # if we are updating an existing booking, dont check against itself.
-        if exclude_booking_id:
-            existing_bookings = existing_bookings.exclude(
-                id=exclude_booking_id)
-
-        # check each existing booking for overlap.
-        for booking in existing_bookings:
-            if (start_time < booking.end_time and end_time > booking.start_time):
-                return True
-            else:
-                return False
+        return f"Booking for {self.user} - {self.treatment} on {slot.date} from {slot.start_time:%H:%M}"
 
     def clean(self):
-        """Validate that the chosen Availability slot is not already booked."""
-        if self.availability and self.availability.is_booked:
-            raise ValidationError("This time slot conflicts with an existing booking.")
+        """
+        Don’t allow picking an Availability that already belongs to a *different* booking.
+        Allow saving when it's the same row (so admin can change status without errors).
+        """
+        if not self.availability_id:
+            return
+
+        if hasattr(self.availability, "booking"):
+            if self.availability.booking_id != self.pk:
+                raise ValidationError({"availability": "This time slot is already booked."})
