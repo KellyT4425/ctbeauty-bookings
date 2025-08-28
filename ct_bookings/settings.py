@@ -121,6 +121,10 @@ TEMPLATES = [
     },
 ]
 
+ACCOUNT_FORMS = {
+    "signup": "services.forms.CustomSignupForm",
+}
+
 WSGI_APPLICATION = 'ct_bookings.wsgi.application'
 
 # Database

@@ -138,8 +138,18 @@
 **4.** When rescheduling, only the availability (time) is changed; the previous slot is freed.
 
 ## **Design**
+[Google Fonts](https://fonts.google.com/specimen/Permanent+Marker)
+
+[Favicon](https://favicon.io/)
+
+[Colour Palette Generator](https://www.canva.com/colors/color-palette-generator/)
+
 
 ## **Accessibility**
+
+[EightShapes](https://contrast-grid.eightshapes.com/)
+
+[WAVE](https://wave.webaim.org/)
 
 ## **Validation** 🔍
 
@@ -150,6 +160,12 @@
 ![Validation](images-readme/python-linter.png)
 
 I also used [Python Tutor](https://pythontutor.com/) throughout the development
+
+W3 HTML 5 [Validator](https://validator.w3.org/)
+
+Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/)
+
+[JSHint](https://jshint.com/)
 
 ## **Deployment** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
@@ -176,7 +192,7 @@ Wait for Heroku to display that the app was deployed successfully.
 ## **Credits**
 
 ### Django & Core Docs
-- [Django Documentation](https://docs.djangoproject.com/en/4.2/) — general reference
+- [Django Documentation](https://docs.djangoproject.com/en/4.2/) — RegexValidator
 - [Forms](https://docs.djangoproject.com/en/4.2/topics/forms/) — ModelForm, widgets
 - [Messages Framework](https://docs.djangoproject.com/en/4.2/ref/contrib/messages/) — flash alerts
 - [Sites Framework](https://docs.djangoproject.com/en/4.2/ref/contrib/sites/) — domain/protocol for email links
@@ -193,7 +209,7 @@ Wait for Heroku to display that the app was deployed successfully.
   - [WhiteNoise](https://whitenoise.readthedocs.io/en/stable/) (compressed storage & middleware)
 
 ### Authentication (django-allauth)
-- [Allauth Docs](https://docs.allauth.org/) — configuration & templates
+- [Allauth Docs](https://docs.allauth.org/) — configuration, templates and custom forms
 - [Account settings](https://docs.allauth.org/en/latest/account/configuration.html)
   — `ACCOUNT_LOGIN_METHODS`, `ACCOUNT_SIGNUP_FIELDS`, `ACCOUNT_DEFAULT_HTTP_PROTOCOL`
 
@@ -227,11 +243,19 @@ Wait for Heroku to display that the app was deployed successfully.
 
 ### Frontend
 - [Bootstrap 5](https://getbootstrap.com/docs/5.3/) — cards, tables, buttons, utilities
-- [Font Awesome]()
+- [EightShapes](https://contrast-grid.eightshapes.com/)
+- [WAVE](https://wave.webaim.org/)
+- [Google Fonts](https://fonts.google.com/specimen/Permanent+Marker)
+- [Favicon](https://favicon.io/)
+- [Colour Palette Generator](https://www.canva.com/colors/color-palette-generator/)
 
 ### Tools & Linters
 - [djLint](https://www.djlint.com/) — Django template formatter/linter
 - [Lucid Chart](https://www.lucidchart.com/blog/automate-your-work-with-lucidchart) was used to create the ERD.
+- [CI Python Linter](https://pep8ci.herokuapp.com/#)
+- W3 HTML 5 [Validator](https://validator.w3.org/)
+- Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/)
+- [JSHint](https://jshint.com/)
 
 ### Optional (used in this project)
 - [django-axes](https://django-axes.readthedocs.io/) — brute-force protection
