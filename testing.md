@@ -22,8 +22,7 @@ Manual testing occurred regularly throughout local development. Tests are docume
 | --- | --- | --- | --- |
 |1| Booking Form **Validation** and **Error Handling** |Pass| All fields required before submit. Notes cannot accept just numbers, letters are also required, spacing allowed. <br>
 ![BookingForm](static/images/booking-validation.png)
-![BookingForm](static/images/notes-bookingform.png)
-|
+![BookingForm](static/images/notes-bookingform.png)|
 |2| Booking Form **accepts** booking and **redirects** the user to My Bookings |Pass| When the user fills in the Booking Form and clicks Book Now, the user is redirected to My Bookings, where they can view booking details, edit and delete their booking. <br>
 ![Confirmed](static/images/booking-confirmed.png)
 ![Details](static/images/booking-details.png)|
