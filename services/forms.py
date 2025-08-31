@@ -2,20 +2,38 @@ from django import forms
 from allauth.account.forms import SignupForm
 from django.core.validators import RegexValidator
 
+name_validator = RegexValidator(r'^[A-Za-z\s]+$', "Only letters and spaces are allowed.")
 
+username_validator = RegexValidator(
+    regex=r'^[A-Za-z0-9]+$',
+    message="Username can only contain letters and numbers."
+)
 class CustomSignupForm(SignupForm):
-    name_validator = RegexValidator(
-        regex=r'^[A-Za-z\s]+$',
-        message="Only letters and spaces are allowed."
-    )
-
     first_name = forms.CharField(
         max_length=30,
         required=True,
-        validators=[name_validator]
+        validators=[name_validator],
+        widget=forms.TextInput(attrs={
+            "pattern": r"[A-Za-z ]+",
+            "title": "Only letters and spaces are allowed."})
     )
+
     last_name = forms.CharField(
         max_length=30,
         required=True,
-        validators=[name_validator]
+        validators=[name_validator],
+        widget=forms.TextInput(attrs={
+            "pattern": r"[A-Za-z ]+",
+            "title": "Only letters and spaces are allowed."
+        })
+    )
+
+    username = forms.CharField(
+        max_length=10,
+        required=True,
+        validators=[username_validator],
+        widget=forms.TextInput(attrs={
+            "pattern": r'^[A-Za-z0-9]+$',
+            "title": "Only letters and numbers are allowed."
+        })
     )

@@ -121,10 +121,6 @@ TEMPLATES = [
     },
 ]
 
-ACCOUNT_FORMS = {
-    "signup": "services.forms.CustomSignupForm",
-}
-
 WSGI_APPLICATION = 'ct_bookings.wsgi.application'
 
 # Database
@@ -174,7 +170,7 @@ ACCOUNT_SIGNUP_FIELDS = [
     "password1*",
     "password2*",
 ]
-ACCOUNT_FORMS = {"signup": "core.forms.CustomSignupForm"}
+ACCOUNT_FORMS = {"signup": "services.forms.CustomSignupForm"}
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',       # PBKDF2 + SHA256
