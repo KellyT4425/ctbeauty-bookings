@@ -1,7 +1,7 @@
-## Manual Tests
+# **Manual Tests**
 Manual testing occurred regularly throughout local development. Tests are documented below.
 
-### Homepage
+### **Homepage**
 |Test #|Test|Results|Evidence|
 | --- | --- | --- | --- |
 |1|**Navidation Bar** - adapts to screen size |Pass| Nav bar changes to toggle on smaller devices<br>
@@ -15,9 +15,12 @@ Manual testing occurred regularly throughout local development. Tests are docume
 ![Homepage Links](static/images/links-homepage.png) |
 |6| Logout directs the user to Signout confirmation page |Pass| By clicking Logout the user is asked to confirm if they wish to Sign Out .<br>
 ![Sign Out](static/images/signout-confirm.png) |
+|7| User **Forgot Password** while logging in |Pass| By clicking Forgot Password the user recieves an email notifiying them that a password reset was requested. If the user follows the in email link they are taken to a form to reset there password.<br>
+![Forgot Password](static/images/email-password-reset.png)
+![New Password](static/images/set-new-password.png)
+![Success](static/images/success-reset-pw.png) |
 
-
-### Make a Booking
+### **Make a Booking**
 |Test #|Test|Results|Evidence|
 | --- | --- | --- | --- |
 |1| Booking Form **Validation** and **Error Handling** |Pass| All fields required before submit. Notes cannot accept just numbers, letters are also required, spacing allowed. <br>
@@ -35,3 +38,61 @@ Manual testing occurred regularly throughout local development. Tests are docume
  ![Edited](static/images/booking-edited.png) ![Returned](static/images/returned-slot.png) |
 |7| Slots that are **Cancelled** return to Available Slots. |Pass| User clicks Cancel, confirms Cancellation, is redirected to My Bookings and recieves confirmation message. <br>
 ![Cancel](static/images/booking-cancelled.png) ![All Slots Returned](static/images/all-slots-returned.png)|
+
+### **Register**
+|Test #|Test|Results|Evidence|
+| --- | --- | --- | --- |
+|1| Registration Form(Sign Up) **Validation** and **Error Handling** |Pass| All fields required before submit. Username takes only letters and numbers, Email field accepts only valid email addresses, First name and Last name allows for letters and spacing and Password has acceptance criteria which includes 12 or more characters and cannot be entirely numeric. <br>
+![SignUp required](static/images/sign-up-validation.png)
+![Username](static/images/username-handling.png)
+![First/Last name](static/images/register-handling.png)|
+|2| On Registering an account user is Logged in and recieves **Alert Messages** and an **Confirmation Email** |Pass| Link sent via Email, user clicks the in email link and is redirected back to the site where confirmation is requested and verified.  <br>
+![Confirmed Registration](static/images/confirm-registration.png)
+![Email](static/images/email-confirmation.png)
+![Email Link](static/images/link-email.png)
+![Complete](static\images\confirmed-email.png)|
+
+## **User Story Testing**
+- **Milestone: Functional Booking System**.
+
+  **1.** As a logged-in user, I want to select a treatment, date, and time, So that I can schedule an appointment. **PASS**✔️
+
+  **2.** As a potential customer, I want to browse the available treatments, So that I can decide which service to book. **PASS**✔️
+
+  **3.** As a user, I want to see available dates and times, So that I can choose a suitable appointment slot. **PASS**✔️
+
+  **4.** As a logged-in user, I want to view a list of my upcoming appointments, So that I can keep track of them. **PASS**✔️
+
+  **5.** As a customer, I want to receive a booking success message, so that I know my booking is successful. **PASS**✔️
+
+  **6.** As a user, I want to cancel or change my booking, So that I can manage my schedule as needed. **PASS**✔️
+
+- **Milestone: Implementing User Registration and Login**.
+
+  **1.** As a new customer, I want to register an account, So that I can log in and make a booking for a treatment. **PASS**✔️
+
+  **2.** As a logged-in user, I want to log out of my account so that I can ensure my data is secure. **PASS**✔️
+
+  **3.** As a user who forgot my password, I want to reset it using my email, So that I can regain access to my account. **PASS**✔️
+
+  **4.** As a registered user, I want to log in to my account, so that I can access my personal dashboard and make or manage bookings. **PASS**✔️
+
+- **Milestone: Admin Privileges & Control Panel**.
+
+  **1.** As an admin, I want to view all upcoming bookings, So that I can prepare for upcoming appointments. **PASS**✔️
+
+  **2.** As an admin, I want to change or cancel bookings, So that I can manage conflicts or emergencies. **PASS**✔️
+
+  **3.** As an admin, I want to set my available working hours, So that customers can only book during those times. **PASS**✔️
+
+## **Devices Used**
+> Browsers used to Test CT-Beauty Bookings:
+
+### **Desktop**
+- FireFox 142.0.1
+- Google Chrome 139.0.7258.155
+- Safari 18.6
+
+### **Mobile**
+- Chrome for Android 139.0.7258.158
+- Safari iOS 17

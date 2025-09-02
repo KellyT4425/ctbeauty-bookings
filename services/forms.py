@@ -5,8 +5,9 @@ from django.core.validators import RegexValidator
 name_validator = RegexValidator(r'^[A-Za-z\s]+$', "Only letters and spaces are allowed.")
 
 username_validator = RegexValidator(
-    regex=r'^[A-Za-z0-9]+$',
-    message="Username can only contain letters and numbers."
+    regex=r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$',
+    message="Username can only contain both letters and numbers.",
+    code="invalid_username"
 )
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(
@@ -33,7 +34,7 @@ class CustomSignupForm(SignupForm):
         required=True,
         validators=[username_validator],
         widget=forms.TextInput(attrs={
-            "pattern": r'^[A-Za-z0-9]+$',
+            "pattern": "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$",
             "title": "Only letters and numbers are allowed."
         })
     )
