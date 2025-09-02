@@ -138,16 +138,50 @@
 **4.** When rescheduling, only the availability (time) is changed; the previous slot is freed.
 
 ## **Design**
-[Google Fonts](https://fonts.google.com/specimen/Permanent+Marker)
+[Google Fonts](https://fonts.google.com/specimen/Permanent+Marker)<br>
+![Fredericka the Great](static/images/google-fonts-main.png)<br>
+![Baskervville](static/images/font-text.png)<br>
+> Fredericka the Great <br>
+> Baskervville <br>
 
-[Favicon](https://favicon.io/)
+This font pairing was chosen to:
+
+- Differentiate hierarchy (decorative headers vs. clean body text).
+
+- Reflect brand identity (luxury, creativity, and professionalism).
+
+- Maintain accessibility, since serif fonts with high stroke contrast like Baskervville remain readable at body text sizes, while Fredericka the Great is used sparingly for emphasis.
+
+[Favicons](https://favicon.io/) were created using the project’s CT Beauty branding to maintain a consistent identity across devices and platforms.<br>
+![Favicon Generator](static/images/favicon-generator.png) <br>
+**Purpose:**
+
+- Provides a recognizable brand symbol in browser tabs, bookmarks, and on mobile devices.
+
+- Ensures the application looks professional and polished across platforms.
+
+- Enhances user trust and usability, making the site easy to identify.
 
 [Colour Palette Generator](https://www.canva.com/colors/color-palette-generator/)
+> The brand palette for CT Beauty consists of four main colors:
+
+- Pearl Bush (#E3DAD2) – soft neutral background shade
+
+- Fuscous Gray (#555350) – deep gray, ideal for text and accents
+
+- Whiskey (#CF9274) – warm peach tone for highlights and accents
+
+- Hemp (#8C7C78) – muted mauve-brown for secondary elements
+
+These colors were chosen to reflect a modern, professional, and calming aesthetic while maintaining good readability and accessibility. <br>
+![Colour Palette](static/images/palette-colour-theme.png)
 
 
 ## **Accessibility**
 
 [EightShapes](https://contrast-grid.eightshapes.com/)
+> The EightShapes contrast grid was used as it helps to ensure our chosen color palette provides enough contrast between text and background colors for users with visual impairments. The grid was provided all colours that the Colour Palette Generated provided based off of the sites main image. <br>
+![Contrast Grid](static/images/contrast-table-grid.png)
 
 [WAVE](https://wave.webaim.org/)
 
@@ -166,6 +200,8 @@ W3 HTML 5 [Validator](https://validator.w3.org/)
 Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/)
 
 [JSHint](https://jshint.com/)
+
+[Manual Tests](TESTING.md)
 
 ## **Deployment** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
