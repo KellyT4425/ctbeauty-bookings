@@ -163,7 +163,7 @@ This font pairing was chosen to:
 - Enhances user trust and usability, making the site easy to identify.
 
 [Colour Palette Generator](https://www.canva.com/colors/color-palette-generator/)
-> The brand palette for CT Beauty consists of four main colors:
+> The brand palette for CT Beauty consists of four main colours:
 
 - Pearl Bush (#E3DAD2) – soft neutral background shade
 
@@ -173,14 +173,14 @@ This font pairing was chosen to:
 
 - Hemp (#8C7C78) – muted mauve-brown for secondary elements
 
-These colors were chosen to reflect a modern, professional, and calming aesthetic while maintaining good readability and accessibility. <br>
+These colours were chosen to reflect a modern, professional, and calming aesthetic while maintaining good readability and accessibility. <br>
 ![Colour Palette](static/images/palette-colour-theme.png)
 
 
 ## **Accessibility**
 
 [EightShapes](https://contrast-grid.eightshapes.com/)
-> The EightShapes contrast grid was used as it helps to ensure our chosen color palette provides enough contrast between text and background colors for users with visual impairments. The grid was provided all colours that the Colour Palette Generated provided based off of the sites main image. <br>
+> The EightShapes contrast grid was used as it helps to ensure our chosen colour palette provides enough contrast between text and background colours for users with visual impairments. The grid was provided all colours that the Colour Palette Generated provided based off of the sites main image. <br>
 ![Contrast Grid](static/images/contrast-table-grid.png)
 
 [WAVE](https://wave.webaim.org/)
