@@ -198,9 +198,17 @@ The [WAVE](https://wave.webaim.org/) Accessibility Tool was used throughout deve
 
 [Python Tutor](https://pythontutor.com/) was used during development to step through code execution visually. This tool provides an interactive way to see how variables change, how functions are called, and how data flows through the program line by line. It was especially helpful for debugging complex logic, understanding the order of operations, and building confidence in how Python executes code.
 
-W3 HTML 5 [Validator](https://validator.w3.org/)
+W3 HTML 5 [Validator](https://validator.w3.org/) checks complete on full deployed Heroku URL<br>
+![HTML](static/images/html-validation.png)
 
-Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/)
+Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/) - The CSS files were tested with the W3C CSS Validator using the deployed site URL.
+- **Result**: The code passed validation with the exception of vendor-prefixed properties (e.g., -webkit- and -moz-).
+- **Explanation**: These are vendor-specific extensions added for cross-browser compatibility, particularly for handling animations and font smoothing on WebKit (Safari/Chrome) and Mozilla (Firefox) engines. They are not errors, but intentional additions to ensure consistent styling across browsers.
+- **Decision**: These properties were retained to preserve user experience and compatibility.
+
+> However Custom `style.css` file was run through the Jigsaw W3 Validator and came back with no errors. <br>
+
+![CUSTOM](static/images/custom-css.png)
 
 [JSHint](https://jshint.com/)
 
