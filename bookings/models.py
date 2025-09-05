@@ -10,14 +10,15 @@ STATUS_CHOICES = [
 ]
 
 WEEKDAY_CHOICES = [
-        (0, "Monday"),
-        (1, "Tuesday"),
-        (2, "Wednesday"),
-        (3, "Thursday"),
-        (4, "Friday"),
-        (5, "Saturday"),
-        (6, "Sunday"),
-    ]
+    (0, "Monday"),
+    (1, "Tuesday"),
+    (2, "Wednesday"),
+    (3, "Thursday"),
+    (4, "Friday"),
+    (5, "Saturday"),
+    (6, "Sunday"),
+]
+
 
 class Availability(models.Model):
     """
@@ -39,23 +40,25 @@ class Availability(models.Model):
             "Booked" if self.is_booked else "Available")
         return f"{self.date} {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')} ({status})"
 
+
 class Weekday(models.Model):
     """"
     A weekday lookup (0=Mon … 6=Sun) with a human-readable name.
     """
     number = models.IntegerField(choices=WEEKDAY_CHOICES, unique=True)
-    name   = models.CharField(max_length=9)
+    name = models.CharField(max_length=9)
 
     def __str__(self):
         return self.name
+
 
 class AvailabilityBlock(models.Model):
     """
     A recurring time window over a date range and selected weekdays.
     Used to generate 30-min Availability slots between start_time and end_time.
     """
-    start_date   = models.DateField(default=datetime.date.today)
-    end_date     = models.DateField(default=datetime.date.today)
+    start_date = models.DateField(default=datetime.date.today)
+    end_date = models.DateField(default=datetime.date.today)
     start_time = models.TimeField()
     end_time = models.TimeField()
 
@@ -107,6 +110,7 @@ class Booking(models.Model):
         default="Pending",
         db_index=True,
     )
+
     class Meta:
         ordering = ["-created_at"]
         verbose_name = "Booking"
@@ -129,6 +133,8 @@ class Booking(models.Model):
         if not slot_id:
             return
 
-        clash = Booking.objects.filter(availability_id=slot_id).exclude(pk=self.pk).exists()
+        clash = Booking.objects.filter(
+            availability_id=slot_id).exclude(pk=self.pk).exists()
         if clash:
-            raise ValidationError({"availability": "This time slot is already booked."})
+            raise ValidationError(
+                {"availability": "This time slot is already booked."})

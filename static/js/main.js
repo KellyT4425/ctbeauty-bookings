@@ -1,28 +1,26 @@
 // auto-submit
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const catSelect = document.querySelector('select[name="category"]');
-  if (catSelect) {
-    catSelect.addEventListener("change", function () {
-      this.form.submit();
-    });
-  }
   const treatSelect = document.querySelector('select[name="treatment"]');
-  if (treatSelect) {
-    treatSelect.addEventListener("change", function () {
-      this.form.submit();
-    });
-  }
-});
-
-// disable submit button until availability selected
-document.addEventListener("DOMContentLoaded", function () {
   const availabilityField = document.querySelector(
     'select[name="availability"]'
   );
   const submitBtn = document.querySelector('button[type="submit"]');
-  function toggleBtn() {
-    submitBtn.disabled = !availabilityField.value;
+
+  // Auto-submit when category/treatment change
+  if (catSelect) {
+    catSelect.addEventListener("change", (e) => e.target.form?.submit());
   }
-  toggleBtn();
-  availabilityField.addEventListener("change", toggleBtn);
+  if (treatSelect) {
+    treatSelect.addEventListener("change", (e) => e.target.form?.submit());
+  }
+
+  // Disable submit until an availability is picked
+  if (availabilityField && submitBtn) {
+    const toggleBtn = () => {
+      submitBtn.disabled = !availabilityField.value;
+    };
+    toggleBtn(); // initial state
+    availabilityField.addEventListener("change", toggleBtn);
+  }
 });

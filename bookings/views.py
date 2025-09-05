@@ -5,7 +5,6 @@ from .forms import BookingForm
 from django.contrib import messages
 
 
-
 @login_required
 def make_booking(request):
     """
@@ -46,6 +45,8 @@ def make_booking(request):
     })
 
 # EDIT EXISTING BOOKING
+
+
 @login_required
 def edit_booking(request, pk):
     """
@@ -72,9 +73,11 @@ def edit_booking(request, pk):
         new_slot = form.cleaned_data.get("availability")
 
         if old_slot and new_slot and old_slot != new_slot:
-            old_slot.is_booked = False; old_slot.save(update_fields=["is_booked"])
+            old_slot.is_booked = False
+            old_slot.save(update_fields=["is_booked"])
             if not new_slot.is_booked:
-                new_slot.is_booked = True; new_slot.save(update_fields=["is_booked"])
+                new_slot.is_booked = True
+                new_slot.save(update_fields=["is_booked"])
 
         updated.save()
         messages.success(request, "Booking time updated.")
@@ -101,7 +104,6 @@ def my_bookings(request):
     return render(request, 'bookings/booking_list.html', {
         'bookings': bookings
     })
-
 
 
 # VIEW SINGLE BOOKING

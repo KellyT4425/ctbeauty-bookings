@@ -8,6 +8,7 @@ import re
 from .models import Booking, Availability
 from services.models import Category, Treatment
 
+
 class BookingForm(forms.ModelForm):
     """
     Booking form for create/edit.
@@ -19,15 +20,18 @@ class BookingForm(forms.ModelForm):
     - crispy-forms layout and nicer slot labels
     """
     category = forms.ModelChoiceField(
-        queryset=Category.objects.all(), required=True, empty_label="Select Category", label="Category",
+        queryset=Category.objects.all(), required=True,
+        empty_label="Select Category", label="Category",
     )
+
     class Meta:
         model = Booking
         fields = ["category", "treatment", "availability", "notes"]
         widgets = {
             "treatment": forms.Select(attrs={"class": "form-select"}),
             "availability": forms.Select(attrs={"class": "form-select"}),
-            "notes": forms.Textarea(attrs={"rows": 4, "class": "form-control"}),
+            "notes": forms.Textarea(attrs={"rows": 4,
+                                           "class": "form-control"}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -41,25 +45,27 @@ class BookingForm(forms.ModelForm):
           selected treatment’s duration; applies readable option labels.
         - In edit-only mode, disables Category/Treatment/Notes fields.
         """
-        self.edit_only_availability = kwargs.pop("edit_only_availability", False)
+        self.edit_only_availability = kwargs.pop(
+            "edit_only_availability", False)
         prefilter_category = kwargs.pop("category_id", None)
         super().__init__(*args, **kwargs)
-
 
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.form_class = "needs-validation"
         self.helper.attrs = {"novalidate": ""}
-        self.helper.layout = Layout("category", "treatment", "availability", "notes")
-        self.helper.add_input(Submit("submit", "Book Now", css_class="btn-primary"))
+        self.helper.layout = Layout("category",
+                                    "treatment",
+                                    "availability",
+                                    "notes")
+        self.helper.add_input(Submit("submit", "Book Now",
+                                     css_class="btn-primary"))
 
         self.fields["treatment"].required = True
         self.fields["treatment"].empty_label = "Select Treatment"
         self.fields["availability"].required = True
         self.fields["availability"].empty_label = "Select a date & time"
 
-
-        # --- Determine selected category (POST > kwarg > initial/instance) ---
         cat_id = None
         if "category" in self.data:
             try:
@@ -67,7 +73,8 @@ class BookingForm(forms.ModelForm):
             except (TypeError, ValueError):
                 cat_id = None
         if not cat_id and prefilter_category:
-            cat_id = prefilter_category if isinstance(prefilter_category, int) else getattr(prefilter_category, "pk", None)
+            cat_id = prefilter_category if isinstance(
+                prefilter_category, int) else getattr(prefilter_category, "pk", None)
         if not cat_id and self.initial.get("category"):
             cat_init = self.initial["category"]
             cat_id = cat_init.pk if hasattr(cat_init, "pk") else cat_init
@@ -76,7 +83,8 @@ class BookingForm(forms.ModelForm):
 
         # --- Filter treatments by category (or none) ---
         if cat_id:
-            self.fields["treatment"].queryset = Treatment.objects.filter(category_id=cat_id)
+            self.fields["treatment"].queryset = Treatment.objects.filter(
+                category_id=cat_id)
             self.fields["category"].initial = cat_id
         else:
             self.fields["treatment"].queryset = Treatment.objects.none()
@@ -127,7 +135,8 @@ class BookingForm(forms.ModelForm):
         if self.edit_only_availability and self.instance and self.instance.pk:
             for name in ("category", "treatment", "notes"):
                 if name in self.changed_data:
-                    self.add_error(name, "To change this, cancel the booking and make a new one.")
+                    self.add_error(
+                        name, "To change this, cancel the booking and make a new one.")
             return cleaned
 
         category = cleaned.get("category")
@@ -144,7 +153,8 @@ class BookingForm(forms.ModelForm):
 
         # Cross-field: treatment must belong to selected category
         if category and treatment and treatment.category_id != category.id:
-            self.add_error("treatment", "Please choose a treatment in the selected category.")
+            self.add_error(
+                "treatment", "Please choose a treatment in the selected category.")
 
         return cleaned
 

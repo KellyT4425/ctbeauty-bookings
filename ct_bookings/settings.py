@@ -34,7 +34,8 @@ if dotenv_path.exists():
     from dotenv import load_dotenv
     load_dotenv(dotenv_path)
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'pzWq-IWf_4eOlHE_P1L_W0wxJuwR9M0k_qAc6nNNugM')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'pzWq-IWf_4eOlHE_P1L_W0wxJuwR9M0k_qAc6nNNugM')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # ← change to True for local dev, False for Heroku
@@ -44,7 +45,7 @@ ALLOWED_HOSTS = [
     'ct-beauty-bookings-34c60b5072dd.herokuapp.com',
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "https://ct-beauty-bookings-34c60b5072dd.herokuapp.com",]
+    "https://ct-beauty-bookings-34c60b5072dd.herokuapp.com", ]
 
 # Application definition
 INSTALLED_APPS = [
@@ -72,13 +73,15 @@ INSTALLED_APPS = [
     'axes',
 ]
 
-EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@ctbeauty.local")
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL", "noreply@ctbeauty.local")
 
 SITE_ID = 1
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get("ACCOUNT_PROTOCOL", "http")
@@ -108,7 +111,7 @@ ROOT_URLCONF = 'ct_bookings.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -215,9 +218,10 @@ AUTHENTICATION_BACKENDS = [
 AXES_ENABLED = os.environ.get("AXES_ENABLED", "True") == "True"
 AXES_FAILURE_LIMIT = int(os.environ.get("AXES_FAILURE_LIMIT", "3"))
 AXES_COOLOFF_TIME = timedelta(
-     hours=int(os.environ.get("AXES_COOLOFF_HOURS", "1"))
+    hours=int(os.environ.get("AXES_COOLOFF_HOURS", "1"))
 )
-AXES_RESET_ON_SUCCESS = os.environ.get("AXES_RESET_ON_SUCCESS", "True") == "True"
+AXES_RESET_ON_SUCCESS = os.environ.get(
+    "AXES_RESET_ON_SUCCESS", "True") == "True"
 
 
 # Default primary key field type

@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from .models import AvailabilityBlock
 from .utils import create_slots_for_date
 
+
 @receiver(post_save, sender=AvailabilityBlock)
 @receiver(m2m_changed, sender=AvailabilityBlock.days_of_week.through)
 def regenerate_block_slots(sender, instance, **kwargs):

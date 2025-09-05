@@ -15,7 +15,7 @@ def create_slots_for_date(date, start_time, end_time, slot_minutes=30):
       - is_booked=False
     """
     current = datetime.combine(date, start_time)
-    end_dt  = datetime.combine(date, end_time)
+    end_dt = datetime.combine(date, end_time)
     slots_to_create = []
 
     # gather all existing (start,end) pairs for that date

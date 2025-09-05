@@ -183,17 +183,20 @@ These colours were chosen to reflect a modern, professional, and calming aesthet
 > The EightShapes contrast grid was used as it helps to ensure our chosen colour palette provides enough contrast between text and background colours for users with visual impairments. The grid was provided all colours that the Colour Palette Generated provided based off of the sites main image. <br>
 ![Contrast Grid](static/images/contrast-table-grid.png)
 
-[WAVE](https://wave.webaim.org/)
+The [WAVE](https://wave.webaim.org/) Accessibility Tool was used throughout development to test and improve the site’s accessibility. It highlights errors, contrast issues, missing alternative text, and ARIA labels directly on the rendered page. All issues raised by WAVE have been edited. <br>
+![Wave](static/images/wave-example.png)
 
 ## **Validation** 🔍
 
 [CI Python Linter](https://pep8ci.herokuapp.com/#)
 
-> **CI Python Linter**.
+> **CI Python Linter** The project was validated using the CI Python Linter, which checks code against PEP8 standards.
 
-![Validation](images-readme/python-linter.png)
+- **Result**: All files passed validation, with the exception of a few E501 line too long warnings.
 
-I also used [Python Tutor](https://pythontutor.com/) throughout the development
+- **Explanation**: These warnings occur on lines where reducing the character count would break readability or functionality — for example, long querysets, form field definitions, or model configurations that need to stay on a single line for clarity
+
+[Python Tutor](https://pythontutor.com/) was used during development to step through code execution visually. This tool provides an interactive way to see how variables change, how functions are called, and how data flows through the program line by line. It was especially helpful for debugging complex logic, understanding the order of operations, and building confidence in how Python executes code.
 
 W3 HTML 5 [Validator](https://validator.w3.org/)
 
@@ -228,74 +231,96 @@ Wait for Heroku to display that the app was deployed successfully.
 ## **Credits**
 
 ### Django & Core Docs
-- [Django Documentation](https://docs.djangoproject.com/en/4.2/) — RegexValidator
-- [Forms](https://docs.djangoproject.com/en/4.2/topics/forms/) — ModelForm, widgets
-- [Messages Framework](https://docs.djangoproject.com/en/4.2/ref/contrib/messages/) — flash alerts
-- [Sites Framework](https://docs.djangoproject.com/en/4.2/ref/contrib/sites/) — domain/protocol for email links
-- [Settings Reference](https://docs.djangoproject.com/en/4.2/ref/settings/)
-  - [Middleware](https://docs.djangoproject.com/en/4.2/topics/http/middleware/)
-  - [Templates (DIRS, APP_DIRS, context processors)](https://docs.djangoproject.com/en/4.2/ref/templates/api/)
-  - [Authentication backends](https://docs.djangoproject.com/en/4.2/topics/auth/customizing/#specifying-authentication-backends)
-  - [Password validation](https://docs.djangoproject.com/en/4.2/topics/auth/passwords/#password-validation)
-  - [Password hashing](https://docs.djangoproject.com/en/4.2/topics/auth/passwords/#password-hashing)
-  - [Time zones](https://docs.djangoproject.com/en/4.2/topics/i18n/timezones/)
-- Static files & production
-  - [Static files (`STATIC_URL`, `STATICFILES_DIRS`, `STATIC_ROOT`)](https://docs.djangoproject.com/en/4.2/howto/static-files/)
-  - [collectstatic](https://docs.djangoproject.com/en/4.2/ref/contrib/staticfiles/#collectstatic)
-  - [WhiteNoise](https://whitenoise.readthedocs.io/en/stable/) (compressed storage & middleware)
+
+- Django Documentation — RegexValidator
+- Forms — ModelForm, widgets
+- Messages Framework — flash alerts
+- Sites Framework — domain/protocol for email links
+- Settings Reference
+- Middleware
+- Templates (DIRS, APP_DIRS, context processors)
+- Authentication backends
+- Password validation / hashing
+- Time zones
+
+### Static Files & Production
+
+- Static files (STATIC_URL, STATICFILES_DIRS, STATIC_ROOT)
+- collectstatic
+- WhiteNoise — compressed manifest storage & middleware
 
 ### Authentication (django-allauth)
-- [Allauth Docs](https://docs.allauth.org/) — configuration, templates and custom forms
-- [Account settings](https://docs.allauth.org/en/latest/account/configuration.html)
-  — `ACCOUNT_LOGIN_METHODS`, `ACCOUNT_SIGNUP_FIELDS`, `ACCOUNT_DEFAULT_HTTP_PROTOCOL`
+- Allauth docs — configuration, templates and custom forms
+- Account settings — ACCOUNT_LOGIN_METHODS, ACCOUNT_SIGNUP_FIELDS, ACCOUNT_DEFAULT_HTTP_PROTOCOL
 
 ### Forms Styling
-- [django-crispy-forms](https://django-crispy-forms.readthedocs.io/) — `{{ form|crispy }}`, helpers/layouts
-- [crispy-bootstrap5](https://github.com/django-crispy-forms/crispy-bootstrap5) — Bootstrap 5 integration
 
-### Email & Utilities (`utils.py`)
-- [Django email overview](https://docs.djangoproject.com/en/4.2/topics/email/)
-  and [EmailMultiAlternatives](https://docs.djangoproject.com/en/4.2/topics/email/#emailmessage-objects)
-- [Rendering templates: `render_to_string`](https://docs.djangoproject.com/en/4.2/topics/templates/#django.template.loader.render_to_string)
-- [Absolute URLs in emails: `build_absolute_uri`](https://docs.djangoproject.com/en/4.2/ref/request-response/#django.http.HttpRequest.build_absolute_uri)
-- iCalendar attachment: [RFC 5545 (iCalendar)](https://www.rfc-editor.org/rfc/rfc5545)
+- django-crispy-forms — {{ form|crispy }}, helpers/layouts
+- crispy-bootstrap5 — Bootstrap 5 integration
 
-### Signals & App Wiring (`signals.py`)
-- [Django signals](https://docs.djangoproject.com/en/4.2/topics/signals/) — `pre_save`, `post_save`, `post_delete`, `@receiver`
-- [Run after DB commit: `transaction.on_commit`](https://docs.djangoproject.com/en/4.2/topics/db/transactions/#performing-actions-after-commit)
-- [AppConfig.ready()](https://docs.djangoproject.com/en/4.2/ref/applications/#django.apps.AppConfig.ready)
+### Email & Utilities (utils.py)
 
-### Email (SMTP)
-- [Gmail SMTP settings](https://support.google.com/mail/answer/7126229)
-- [Google App Passwords](https://support.google.com/accounts/answer/185833)
+- Django email overview & EmailMultiAlternatives
+- Rendering templates: render_to_string
+- Absolute URLs in emails: build_absolute_uri
+- iCalendar attachment — RFC 5545 (iCalendar)
 
-### Security / HTTPS
-- [Deployment checklist (SSL, secure cookies)](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/)
-- [`SECURE_PROXY_SSL_HEADER`](https://docs.djangoproject.com/en/4.2/ref/settings/#secure-proxy-ssl-header)
+### Signals & App Wiring (signals.py)
+
+- Django signals — pre_save, post_save, post_delete, @receiver
+- Run after DB commit: transaction.on_commit
+- AppConfig.ready()
 
 ### Database & Environment
-- [dj-database-url](https://github.com/jacobian/dj-database-url) — DB config from env
-- [python-dotenv](https://saurabh-kumar.com/python-dotenv/) — load `.env` in dev
+
+- dj-database-url — DB config from env
+- python-dotenv — load .env in dev
 
 ### Frontend
-- [Bootstrap 5](https://getbootstrap.com/docs/5.3/) — cards, tables, buttons, utilities
-- [EightShapes](https://contrast-grid.eightshapes.com/)
-- [WAVE](https://wave.webaim.org/)
-- [Google Fonts](https://fonts.google.com/specimen/Permanent+Marker)
-- [Favicon](https://favicon.io/)
-- [Colour Palette Generator](https://www.canva.com/colors/color-palette-generator/)
+
+- Bootstrap 5 — cards, tables, buttons, utilities
+- Google Fonts
+- Favicon
+- Colour Palette Generator
+
+### JavaScript (for booking form behaviours & hardening)
+#### MDN Web Docs
+* Document.addEventListener
+* DOMContentLoaded for safe init
+* Document.querySelector — element selection
+* HTMLFormElement.form — referencing parent form
+* Optional chaining (?.) — null-safe access
+* Script defer attribute — run after HTML parsed
+* Arrow functions — concise handlers
+
+#### Stack Overflow
+
+- “Cannot read property of null/undefined” in JS — why null checks matter
+- Best-practice guides - FreeCodeCamp & CSS-Tricks tutorials on defensive DOM scripting and conditional event handling
+
+### Accessibility & Design Tools
+
+- EightShapes
+- WAVE
 
 ### Tools & Linters
-- [djLint](https://www.djlint.com/) — Django template formatter/linter
-- [Lucid Chart](https://www.lucidchart.com/blog/automate-your-work-with-lucidchart) was used to create the ERD.
-- [CI Python Linter](https://pep8ci.herokuapp.com/#)
-- W3 HTML 5 [Validator](https://validator.w3.org/)
-- Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/)
-- [JSHint](https://jshint.com/)
+
+- djLint — Django template formatter/linter
+- CI Python Linter
+- W3 HTML 5 Validator
+- Jigsaw W3 CSS 3 Validator
+- JSHint
 
 ### Optional (used in this project)
-- [django-axes](https://django-axes.readthedocs.io/) — brute-force protection
-- [django-summernote](https://github.com/summernote/django-summernote) — rich text editor
+
+- django-axes — brute-force protection
+- django-summernote — rich text editor
+
+### Deployment
+
+- Heroku (platform & release phase)
+- WhiteNoise (static files in production)
 
 ### Support & Guidance
-[Mentor](https://www.linkedin.com/in/hamiltondl/) Daniel Hamilton through each step in development, and on into production provided
+
+- Mentor Daniel Hamilton through development and into production

@@ -1,6 +1,5 @@
 from datetime import timedelta
 from django.contrib.auth import get_user_model
-from django.contrib.messages import get_messages
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
@@ -11,10 +10,13 @@ from ..models import Availability, Booking
 # Create your tests here.
 
 User = get_user_model()
+
+
 class TestMakeBookingView(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username="tester", email="user@test.com", password="pw12345")
+        self.user = User.objects.create_user(
+            username="tester", email="user@test.com", password="pw12345")
 
         self.cat = Category.objects.create(name="Nails")
         self.treatment = Treatment.objects.create(
@@ -30,7 +32,8 @@ class TestMakeBookingView(TestCase):
         self.slot = Availability.objects.create(
             date=start_date.date(),
             start_time=start_date.time().replace(second=0, microsecond=0),
-            end_time=(start_date + timedelta(minutes=30)).time().replace(second=0, microsecond=0),
+            end_time=(start_date + timedelta(minutes=30)
+                      ).time().replace(second=0, microsecond=0),
             duration=30,
             is_booked=False,
         )
@@ -64,7 +67,8 @@ class TestMakeBookingView(TestCase):
             },
         )
         self.assertEqual(resp.status_code, 302)  # redirect
-        self.assertTrue(Booking.objects.filter(user=self.user, availability=self.slot).exists())
+        self.assertTrue(Booking.objects.filter(
+            user=self.user, availability=self.slot).exists())
 
         self.slot.refresh_from_db()
         self.assertTrue(self.slot.is_booked)
