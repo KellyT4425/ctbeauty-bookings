@@ -1,5 +1,3 @@
-/* KELLY TEST 2025-09-05 11:45 */
-
 /* GLOBAL */
 body {
   background-color: #e3dad2;
@@ -50,14 +48,9 @@ footer .navbar-nav {
 /* HOME TEMPLATE */
 
 .btn.btn-brand {
-  --bs-btn-bg: #555350;
-  --bs-btn-border-color: #555350;
-  --bs-btn-color: #e3dad2;
+  background-color: #555350;
+  border: #555350;
+  color: #e3dad2;
   border-radius: 0.5rem;
   letter-spacing: 2px;
-}
-
-/* DEBUG */
-html {
-  outline: 3px solid red !important;
 }

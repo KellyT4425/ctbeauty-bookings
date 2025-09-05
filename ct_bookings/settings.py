@@ -37,7 +37,7 @@ if dotenv_path.exists():
 SECRET_KEY = os.environ.get('SECRET_KEY', 'pzWq-IWf_4eOlHE_P1L_W0wxJuwR9M0k_qAc6nNNugM')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False   # ← change to True for local dev, False for Heroku
+DEBUG = False  # ← change to True for local dev, False for Heroku
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
