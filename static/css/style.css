@@ -54,3 +54,7 @@ footer .navbar-nav {
   border-radius: 0.5rem;
   letter-spacing: 2px;
 }
+
+.btn.btn-brand {
+  outline: 4px solid red !important;
+}
