@@ -228,7 +228,7 @@ Manual tests were carried out to ensure the functionality of all main features.
 
 - Browser compatibility and responsiveness were tested across different screen sizes.
 
-A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Manual Tests](TESTING.md)
+A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Manual Tests](testing.md)
 
 #### **Lighthouse**
 Lighthouse (built into Chrome DevTools) was used to audit the site for performance, accessibility, best practices, and SEO.
