@@ -311,9 +311,7 @@ The project was deployed to Heroku using the following steps:
    - requirements.txt includes: django, gunicorn, whitenoise, dj-database-url, psycopg2-binary, django-allauth, crispy-bootstrap5, etc.
 
 > Procfile:
-release: python manage.py migrate |
 web: gunicorn <your_project_name>.wsgi
-
 
 - Optional: .python-version (e.g. python-3.12.5).
 
@@ -324,15 +322,15 @@ web: gunicorn <your_project_name>.wsgi
   * Database configured from DATABASE_URL via dj-database-url
   * All secrets and environment-specific values read from env vars
 
-2. **Create the Heroku app:**
+1. **Create the Heroku app:**
    1. Heroku Dashboard → New → Create new app → name + region.
    2. Add-ons: add Heroku Postgres (creates DATABASE_URL).
 
-3. **Buildpacks:**
+2. **Buildpacks:**
    - Add heroku/python.
    - Add heroku/nodejs only if the project runs an npm build. Otherwise skip.
 
-4. **Config Vars (production):**
+3. **Config Vars (production):**
 
 > Do not set PORT (Heroku sets it automatically).
 
