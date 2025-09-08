@@ -230,9 +230,6 @@ Manual tests were carried out to ensure the functionality of all main features.
 
 A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Manual Tests](testing.md)
 
-#### **Lighthouse**
-Lighthouse (built into Chrome DevTools) was used to audit the site for performance, accessibility, best practices, and SEO.
-
 ## **Deployment** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
 
