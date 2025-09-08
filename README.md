@@ -72,6 +72,33 @@
 
   **3.** As an admin, I want to set my available working hours, So that customers can only book during those times.
 
+### **Incomplete User Stories** ⌚
+
+> Not all user stories planned for the final sprint were completed. The following user stories were not completed in the current sprint and have been added to the product backlog for future development:
+
+#### Contact Form
+
+**User Story**: As a visitor, I want to send a message via a contact form so that I can ask questions before booking.
+
+- Planned Features:
+  * Form fields for name, email, subject, and message
+  * Validation to ensure all fields are completed
+  * Submission stored or emailed to admin
+  * User feedback (success/error messages) <br>
+[Contact & Support](https://github.com/KellyT4425/ctbeauty-bookings/issues/14#issue-3146117866)
+
+#### Session Management
+
+**User Story**: As a registered user, I want active session management so that I remain securely logged in.
+
+<em>Status</em>: Registration and login are functional, but session handling has been deferred.
+
+- Planned Features:
+  * Extended session handling and improved login state management. <br>
+[Session Management](https://github.com/KellyT4425/ctbeauty-bookings/issues/24#issue-3362804998)
+
+These stories remain in the product backlog and will be addressed in furture features.
+
 ## **Entity Relationship Diagram (ERD)** 🔁
 
 ![CT Beauty ERD](static/images/ERD-Models.jpg)
@@ -175,6 +202,31 @@ This font pairing was chosen to:
 These colours were chosen to reflect a modern, professional, and calming aesthetic while maintaining good readability and accessibility. <br>
 ![Colour Palette](static/images/palette-colour-theme.png)
 
+## **Future Features** 👽
+1. **Contact Form**
+   - Allow visitors to send enquiries before booking, with validation and admin notification.
+
+2. **Session Management**
+   - Improved login session handling for enhanced security and smoother user experience.
+
+3. **Email Confirmations for CRUD Actions**
+   - Automated emails sent to users when they create, update, or cancel a booking.
+
+4. **Admin Dashboard Enhancements**
+   - Better overview of bookings, with filters by date, treatment type, or status.
+
+5. **Booking Reminders**
+   - Automated email or SMS reminders sent to users before their appointment.
+
+6. **Waitlist Functionality**
+   - If a slot is fully booked, users can join a waitlist and be notified if it becomes available.
+
+7. **Reviews & Ratings**
+   - After an appointment, users can leave a review and rating for treatments.
+
+8. **Favourites / Repeat Booking**
+   - Users can save favourite treatments or rebook past appointments with one click.
+
 
 ## **Accessibility**
 
@@ -228,7 +280,27 @@ Manual tests were carried out to ensure the functionality of all main features.
 
 - Browser compatibility and responsiveness were tested across different screen sizes.
 
-A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Manual Tests](testing.md)
+A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Tests](testing.md)
+
+## Bugs 🪲
+
+#### Bugs Encountered 🔨
+
+During development, several issues were identified and resolved:
+
+| Bug                                                   | Cause                                                                 | Fix                                                                |
+| ----------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **`.env` not loading on Heroku**                      | `.env` was in `.gitignore`, so environment variables weren’t deployed | Added config vars directly in Heroku dashboard                     |
+| **Heroku/Choco commands not working in Git Bash/WSL** | CLI tools installed only on Windows side, not in Bash/WSL PATH        | Used Windows CLI or updated PATH                                   |
+| **Gunicorn worker boot failed**                       | Misconfiguration during deployment                                    | Reviewed Heroku logs via CLI, fixed settings until workers started |
+| **Date picker not rendering**                         | Wrong widget import                                                   | Corrected widget import in form                                    |
+| **Form allowed invalid dates**                        | Missing `clean()` validation                                          | Added validation to block end-date before start-date               |
+| **Required fields failed silently**                   | Template missing `{{ form.errors }}`                                  | Added error rendering in template                                  |
+| **404 from URL mismatch**                             | Trailing slash mismatch in `urls.py`                                  | Updated URL patterns                                               |
+| **Broken templates after renaming views**             | Templates still referenced old URL names                              | Updated all references to new names                                |
+| **Migration error: “add non-nullable field”**         | Field added without default or `null=True`                            | Supplied default value or set `null=True`                          |
+| **Migration error: “column does not exist”**          | Model/field renamed without `RenameField`                             | Used proper migration operation                                    |
+
 
 ## **Deployment** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)

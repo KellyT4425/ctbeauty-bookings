@@ -1,5 +1,5 @@
-# **Manual Tests**
-Manual testing occurred regularly throughout local development. Tests are documented below.
+# **Testing** 📲
+Testing occurred regularly throughout local development. Tests are documented below.
 
 ### **Homepage**
 |Test #|Test|Results|Evidence|
