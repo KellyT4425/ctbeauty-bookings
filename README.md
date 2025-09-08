@@ -326,98 +326,81 @@ Wait for Heroku to display that the app was deployed successfully.
 
 ## **Credits**
 
-### Django & Core Docs
+### Primary Documentation
+- [Django Docs:](https://docs.djangoproject.com/en/5.2/) Project setup, models, forms, templates, messages, middleware, static files, sites framework, auth backends, password validation/hashing, time zones.
 
-- Django Documentation — RegexValidator
-- Forms — ModelForm, widgets
-- Messages Framework — flash alerts
-- Sites Framework — domain/protocol for email links
-- Settings Reference
-- Middleware
-- Templates (DIRS, APP_DIRS, context processors)
-- Authentication backends
-- Password validation / hashing
-- Time zones
+- [django-allauth Docs:](https://docs.allauth.org/en/latest/) configuration, templates, custom forms, account settings (login methods, signup fields, default protocol).
 
-### Static Files & Production
+- [crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/) & crispy-bootstrap-5 Docs.
 
-- Static files (STATIC_URL, STATICFILES_DIRS, STATIC_ROOT)
-- collectstatic
-- WhiteNoise — compressed manifest storage & middleware
+- [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/) 5 Docs.
 
-### Authentication (django-allauth)
-- Allauth docs — configuration, templates and custom forms
-- Account settings — ACCOUNT_LOGIN_METHODS, ACCOUNT_SIGNUP_FIELDS, ACCOUNT_DEFAULT_HTTP_PROTOCOL
+- [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event) (JS DOM: addEventListener, DOMContentLoaded, querySelector, optional chaining, defer).
 
-### Forms Styling
+- RFC 5545 (iCalendar) for email attachments.
 
-- django-crispy-forms — {{ form|crispy }}, helpers/layouts
-- crispy-bootstrap5 — Bootstrap 5 integration
+### Python/Django Packages Used
 
-### Email & Utilities (utils.py)
+- django, django-allauth, crispy-forms, crispy-bootstrap5
 
-- Django email overview & EmailMultiAlternatives
-- Rendering templates: render_to_string
-- Absolute URLs in emails: build_absolute_uri
-- iCalendar attachment — RFC 5545 (iCalendar)
+- dj-database-url, python-dotenv
 
-### Signals & App Wiring (signals.py)
+- [whitenoise](https://whitenoise.readthedocs.io/en/latest/)
 
-- Django signals — pre_save, post_save, post_delete, @receiver
-- Run after DB commit: transaction.on_commit
-- AppConfig.ready()
+- [gunicorn](https://gunicorn.org/) (production WSGI server)
 
-### Database & Environment
+- [psycopg2-binary](https://pypi.org/project/psycopg2-binary/) (PostgreSQL driver)
 
-- dj-database-url — DB config from env
-- python-dotenv — load .env in dev
+- (optional actually used) django-axes, django-summernote
 
-### Frontend
+### Frontend & Assets
 
-- Bootstrap 5 — cards, tables, buttons, utilities
-- Google Fonts
-- Favicon
-- Colour Palette Generator
+- [Google Fonts:](https://fonts.google.com/) [list the exact families you used].
 
-### JavaScript (for booking form behaviours & hardening)
-#### MDN Web Docs
-* Document.addEventListener
-* DOMContentLoaded for safe init
-* Document.querySelector — element selection
-* HTMLFormElement.form — referencing parent form
-* Optional chaining (?.) — null-safe access
-* Script defer attribute — run after HTML parsed
-* Arrow functions — concise handlers
+- Bootstrap 5 components (cards, tables, buttons, utilities).
 
-#### Stack Overflow
+- Favicon/icons: [Generator](https://favicon.io/).
 
-- “Cannot read property of null/undefined” in JS — why null checks matter
-- Best-practice guides - FreeCodeCamp & CSS-Tricks tutorials on defensive DOM scripting and conditional event handling
+- Colour palette: [Canva Generator](https://www.canva.com/colors/color-palette-generator/).
 
-### Accessibility & Design Tools
+### Validation & Testing
 
-- EightShapes
-- WAVE
+- W3C [HTML Validator](https://validator.w3.org/), W3C [CSS](https://jigsaw.w3.org/css-validator/) Jigsaw.
 
-### Tools & Linters
+- [JSHint](https://jshint.com/) (ES6+ audit notes).
 
-- djLint — Django template formatter/linter
-- Auto PEP8 template formatter.
-- CI Python Linter
-- W3 HTML 5 Validator
-- Jigsaw W3 CSS 3 Validator
-- JSHint
+- [djLint](https://djlint.com/) (Django template formatting).
 
-### Optional (used in this project)
+- AutoPEP8 / [CI Python Linter](https://pep8ci.herokuapp.com/).
 
-- django-axes — brute-force protection
-- django-summernote — rich text editor
+- [Lighthouse audits](testing.md) (Performance, Accessibility, Best Practices, SEO).
 
-### Deployment
+- [WAVE](https://wave.webaim.org/) accessibility checks.
 
-- Heroku (platform & release phase)
-- WhiteNoise (static files in production)
+- Manual testing: see [TESTING.md](testing.md).
+
+### DevOps & Deployment
+
+- [Heroku](https://id.heroku.com/login) (platform, release phase), Heroku CLI.
+
+- WhiteNoise static file serving.
+
+- Gmail App Passwords for email (dev), Django email utilities (EmailMultiAlternatives, render_to_string, build_absolute_uri).
+
+### Learning References
+
+- [Stack Overflow](https://stackoverflow.com/questions) threads consulted (null/undefined DOM access and defensive event handling).
+
+- freeCodeCamp / CSS-Tricks guides on DOM safety and conditional handlers.
+
+### Attribution & Licenses
+
+- Fonts and icons licensed per their providers.
+
+- Any third-party images/screenshots credited where used in README/Testing.
 
 ### Support & Guidance
 
-- Mentor Daniel Hamilton through development and into production
+- Mentor [Daniel Hamilton](https://www.linkedin.com/in/hamiltondl/) throughout development and into production has been so supportive and knowledgeable. Each session provided guidance that was vital to the overall completion of this project.
+- CI Peer [Kristian Cross](https://www.linkedin.com/in/kristian-cross-4976622b7/) provided guidance and support, given me insight into aspects of Django and the flow of models.
+- CI Tutoring Assistance and Student Care.
