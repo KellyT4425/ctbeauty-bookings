@@ -1,8 +1,7 @@
 ![Hero Image](static/images/CT-logo.jpg)
 # **CT Beauty: Salon Appointments Made Simple**
-[**Check it OUT!!!**](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
-
-[**Github Repo**](https://github.com/KellyT4425/ctbeauty-bookings)
+| [➡️**View CT Beauty NOW!!**](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
+| [➡️**Github Repo**](https://github.com/KellyT4425/ctbeauty-bookings) | ⭐
 
 ## **Project Description**
 
@@ -31,16 +30,16 @@
 | Layer                | Libraries / Tools                                  | Notes |
 |---------------------|-----------------------------------------------------|------|
 | **Backend**         | Django 4                                           | Core framework (MVP) |
-| **Authentication**  | django-allauth                                     | Username or email login, templates |
+| **Authentication**  | django-allauth 🔒                                    | Username or email login, templates |
 | **Forms (server)**  | django-crispy-forms, crispy-bootstrap5             | Clean Bootstrap 5 form rendering |
-| **Frontend (client)** | Bootstrap 5, custom CSS, minimal JS               | Responsive UI, brand color `#CF9274` |
+| **Frontend (client)** | Bootstrap 5, custom CSS, minimal JS               | Responsive UI, brand color `#555350` |
 | **Database**        | PostgreSQL, `dj-database-url`                      | DB config via environment variables |
 | **Static files**    | WhiteNoise                                         | Compressed static serving in prod |
 | **Security**        | django-axes                                        | Brute-force protection |
 | **Env/Config**      | python-dotenv                                      | Load `.env` in development |
 | **Quality/Tooling** | djLint, Conventional Commits                       | Template formatting & commit convention |
 
-## **User Stories**
+## **User Stories** 🙋
 - **Milestone: Functional Booking System**.
 
   **1.** As a logged-in user, I want to select a treatment, date, and time, So that I can schedule an appointment.
@@ -73,11 +72,11 @@
 
   **3.** As an admin, I want to set my available working hours, So that customers can only book during those times.
 
-## **Entity Relationship Diagram (ERD)**
+## **Entity Relationship Diagram (ERD)** 🔁
 
 ![CT Beauty ERD](static/images/ERD-Models.jpg)
 
-## **Entities**
+## **Entities** ↔️
 
 #### Category
 - Groups services (e.g., Brows, Lashes, Waxing).
@@ -137,7 +136,7 @@
 
 **4.** When rescheduling, only the availability (time) is changed; the previous slot is freed.
 
-## **Design**
+## **Design** ✏️
 [Google Fonts](https://fonts.google.com/specimen/Permanent+Marker)<br>
 ![Fredericka the Great](static/images/google-fonts-main.png)<br>
 ![Baskervville](static/images/font-text.png)<br>
@@ -210,9 +209,29 @@ Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/) - The CSS fil
 
 ![CUSTOM](static/images/custom-css.png)
 
-[JSHint](https://jshint.com/)
+[JSHint](https://jshint.com/) | The JavaScript code was validated using JSHint.
 
-[Manual Tests](TESTING.md)
+> **Warnings**: JSHint flagged the use of modern ES6+ features (const, arrow functions =>, and optional chaining ?.) as only being available in later versions of ECMAScript.
+
+ - **Resolution**: These warnings are not actual errors, but compatibility notes. The project intentionally uses ES6+ syntax for cleaner and more maintainable code.
+
+- **Summary**: No functional errors were found, and the script works as expected in modern browsers that support ES6+.
+
+## **Testing**🔧
+Manual tests were carried out to ensure the functionality of all main features.
+
+- Form inputs were tested for validation and correct behavior.
+
+- Buttons and navigation links were checked for responsiveness and expected results.
+
+- Edge cases (empty fields, invalid data, incorrect routes) were verified.
+
+- Browser compatibility and responsiveness were tested across different screen sizes.
+
+A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Manual Tests](TESTING.md)
+
+#### **Lighthouse**
+Lighthouse (built into Chrome DevTools) was used to audit the site for performance, accessibility, best practices, and SEO.
 
 ## **Deployment** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
@@ -314,6 +333,7 @@ Wait for Heroku to display that the app was deployed successfully.
 ### Tools & Linters
 
 - djLint — Django template formatter/linter
+- Auto PEP8 template formatter.
 - CI Python Linter
 - W3 HTML 5 Validator
 - Jigsaw W3 CSS 3 Validator

@@ -50,7 +50,18 @@ Manual testing occurred regularly throughout local development. Tests are docume
 ![Confirmed Registration](static/images/confirm-registration.png)
 ![Email](static/images/email-confirmation.png)
 ![Email Link](static/images/link-email.png)
-![Complete](static\images\confirmed-email.png)|
+![Complete](static/images/confirmed-email.png)|
+
+## **Unit Tests**
+A single unit test was implemented using Django’s built-in TestCase.
+
+- **Tested view**: `make_booking`
+
+- **Purpose**: confirm that the view responds correctly and renders the expected template when accessed.
+
+- **Framework**: Django’s <em>TestCase</em> class
+
+This test was included as a proof of concept to demonstrate how automated testing can be applied to the project. ➡️ View in [**tests**](bookings/tests/test_makebooking_view.py).
 
 ## **User Story Testing**
 - **Milestone: Functional Booking System**.
@@ -84,6 +95,13 @@ Manual testing occurred regularly throughout local development. Tests are docume
   **2.** As an admin, I want to change or cancel bookings, So that I can manage conflicts or emergencies. **PASS**✔️
 
   **3.** As an admin, I want to set my available working hours, So that customers can only book during those times. **PASS**✔️
+
+## **Automated Testing**
+### LightHouse
+Lighthouse (built into Chrome DevTools) was used to audit the site for performance, accessibility, best practices, and SEO.
+
+The following scores were recorded: <br>
+![Result](static/images/mobile-home.png)
 
 ## **Devices Used**
 > Browsers used to Test CT-Beauty Bookings:
