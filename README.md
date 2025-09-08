@@ -302,27 +302,76 @@ During development, several issues were identified and resolved:
 | **Migration error: “column does not exist”**          | Model/field renamed without `RenameField`                             | Used proper migration operation                                    |
 
 
-## **Deployment** 🚀
+## **Remote Deployment (Heroku)** 🚀
 [Deployed Site Link........](https://ct-beauty-bookings-34c60b5072dd.herokuapp.com/)
 
 The project was deployed to Heroku using the following steps:
 
-1. Sign in to Heroku and access the dashboard.
-2. In the top right corner, click the **"New"** dropdown menu and then click **"Create new app"**.
-3. Choose a name for your app, then change your region accordingly.
-4. Click **"Create app"**.
-5. On the next page that loads after clicking **"Create app"**, click **"Settings"** in the top navigation bar.
-6. Click on **"Reveal Config Vars"**.
-7. Add a new Config Var: type **'PORT'** in the **'KEY'** section, and type **'8000'** into the **'VALUE'** section, then click **"Add"**.
-8. Next, scroll down to the **"Buildpack"** section and click **"Add buildpack"** they must be in order <em>heroku/python</em> then <em>heroku/nodejs</em> after.
-9. In the top navigation bar, click the **"Deploy"** tab.
-10. In the **"Deployment Method"** section, click on GitHub to connect to your GitHub account.
-11. After logging into your GitHub account, search for your GitHub repository name (for this project, it was **"slot-royale"**).
-12. Click on the repository once found to connect it.
-13. Scroll down to the section **"Automatic Deploys"** and click on the **"Enable Automatic Deploys"** button
-Then underneath, make sure the branch for the project is **"main"** and click on the **"Deploy"** button
-Wait for Heroku to display that the app was deployed successfully.
-1.  You can also choose **"manual deploy"**.
+1. **Repository prerequisites:**
+   - requirements.txt includes: django, gunicorn, whitenoise, dj-database-url, psycopg2-binary, django-allauth, crispy-bootstrap5, etc.
+
+> Procfile:
+release: python manage.py migrate |
+web: gunicorn <your_project_name>.wsgi
+
+
+- Optional: .python-version (e.g. python-3.12.5).
+
+- Settings (summary):
+  * whitenoise.middleware.WhiteNoiseMiddleware after SecurityMiddleware
+  * STATIC_ROOT = BASE_DIR / "staticfiles"
+  * STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+  * Database configured from DATABASE_URL via dj-database-url
+  * All secrets and environment-specific values read from env vars
+
+2. **Create the Heroku app:**
+   1. Heroku Dashboard → New → Create new app → name + region.
+   2. Add-ons: add Heroku Postgres (creates DATABASE_URL).
+
+3. **Buildpacks:**
+   - Add heroku/python.
+   - Add heroku/nodejs only if the project runs an npm build. Otherwise skip.
+
+4. **Config Vars (production):**
+
+> Do not set PORT (Heroku sets it automatically).
+
+- SECRET_KEY	long-random-string
+- DATABASE_URL postgresql
+- ALLOWED_HOSTS	ct-beauty-bookings.herokuapp.com,your-domain.com
+- CSRF_TRUSTED_ORIGINS	https://ct-beauty-bookings.herokuapp.com,https://your-domain.com
+- ACCOUNT_DEFAULT_HTTP_PROTOCOL	https
+- SITE_DOMAIN	ct-beauty-bookings.herokuapp.com
+- SITE_NAME	CT Beauty
+- DEFAULT_FROM_EMAIL	CT Beauty <youremail@gmail.com>
+- EMAIL_BACKEND	django.core.mail.backends.smtp.EmailBackend
+- EMAIL_HOST	smtp.gmail.com
+- EMAIL_PORT	587
+- EMAIL_USE_SSL  False
+- EMAIL_USE_TLS	True
+- EMAIL_HOST_USER	youremail@gmail.com
+- EMAIL_HOST_PASSWORD	<gmail app password>
+- EMAIL_TIMEOUT	20 (optional)
+
+1. **Connect repository and deploy:**
+   1. App → Deploy tab → connect GitHub repo → select branch main.
+   2. Click Enable Automatic Deploys (or use Manual deploy).
+   3. Watch the build. Fix any collectstatic issues and redeploy if needed.
+
+2. **Database migrations:**
+   - Migrations run automatically on each deploy via the release: command in the Procfile.
+   - Manual alternative:
+    > heroku run python manage.py migrate --app <your-heroku-app-name>
+
+3. **Create a production superuser:**
+    > heroku run python manage.py createsuperuser --app <your-heroku-app-name>
+
+4. **Verify:**
+   - Site: https://<your-app>.herokuapp.com/
+   - Admin: https://<your-app>.herokuapp.com/admin/
+
+5.  **Logs / troubleshooting:**
+    > heroku logs --tail --app <your-heroku-app-name>
 
 ## **Credits**
 
