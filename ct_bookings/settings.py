@@ -56,7 +56,7 @@ EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # ← change to True for local dev, False for Heroku
+DEBUG = True  # ← change to True for local dev, False for Heroku
 
 # Application definition
 INSTALLED_APPS = [

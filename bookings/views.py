@@ -15,9 +15,13 @@ def make_booking(request):
     then redirect to `bookings:list`; on errors, re-render with messages.
     """
     category_id = request.POST.get("category") or request.GET.get("category")
+    treatment_id = request.POST.get(
+        "treatment") or request.GET.get("treatment")
 
     if request.method == "POST":
-        form = BookingForm(request.POST, category_id=category_id)
+        form = BookingForm(request.POST or 404,
+                           category_id=category_id,
+                           treatment_id=treatment_id,)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user

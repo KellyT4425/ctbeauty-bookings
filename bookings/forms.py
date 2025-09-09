@@ -46,7 +46,7 @@ class BookingForm(forms.ModelForm):
         - In edit-only mode, disables Category/Treatment/Notes fields.
         """
         self.edit_availability = kwargs.pop(
-            "edit_only_availability", False)
+            "edit_availability", False)
         prefilter_category = kwargs.pop("category_id", None)
         super().__init__(*args, **kwargs)
 
