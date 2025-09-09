@@ -68,7 +68,7 @@ def edit_booking(request, pk):
         request.POST or None,
         instance=booking,
         category_id=category_id,
-        edit_only_availability=True,
+        edit_availability=True,
     )
 
     if request.method == "POST" and form.is_valid():
