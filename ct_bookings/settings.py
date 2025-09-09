@@ -15,6 +15,7 @@ from pathlib import Path
 import os
 import dj_database_url
 from datetime import timedelta
+from dotenv import load_dotenv
 from django.contrib.messages import constants as m
 
 MESSAGE_TAGS = {
@@ -25,7 +26,6 @@ MESSAGE_TAGS = {
     m.ERROR: "danger",
 }
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env (dev only)
@@ -34,18 +34,22 @@ if dotenv_path.exists():
     from dotenv import load_dotenv
     load_dotenv(dotenv_path)
 
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY', 'pzWq-IWf_4eOlHE_P1L_W0wxJuwR9M0k_qAc6nNNugM')
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY is missing. Check your .env or Heroku config vars.")
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False  # ← change to True for local dev, False for Heroku
-
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'ct-beauty-bookings-34c60b5072dd.herokuapp.com',
-]
-CSRF_TRUSTED_ORIGINS = [
-    "https://ct-beauty-bookings-34c60b5072dd.herokuapp.com", ]
 
 # Application definition
 INSTALLED_APPS = [
@@ -73,21 +77,10 @@ INSTALLED_APPS = [
     'axes',
 ]
 
-EMAIL_BACKEND = os.environ.get(
-    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
-DEFAULT_FROM_EMAIL = os.environ.get(
-    "DEFAULT_FROM_EMAIL", "noreply@ctbeauty.local")
-
 SITE_ID = 1
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get("ACCOUNT_PROTOCOL", "http")
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -127,14 +120,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ct_bookings.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#      'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
 DATABASES = {
     "default": dj_database_url.config(
         default=os.environ.get("DATABASE_URL"),

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from services import views as service_views
+from core import views
 
 
 urlpatterns = [
@@ -26,5 +27,5 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("", service_views.home, name="home"),
     path('summernote/', include('django_summernote.urls')),
-
+    path('debug-500/', views.debug_500, name="debug-500"),
 ]

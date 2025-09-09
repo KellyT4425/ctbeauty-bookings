@@ -53,3 +53,12 @@ footer .navbar-nav {
   border-radius: 0.5rem;
   letter-spacing: 2px;
 }
+
+/* 404 Page */
+.error-404 {
+  background-color: #555350;
+  border: #555350;
+  color: #e3dad2;
+  border-radius: 0.5rem;
+  letter-spacing: 2px;
+}
