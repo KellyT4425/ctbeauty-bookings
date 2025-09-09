@@ -34,8 +34,11 @@ if dotenv_path.exists():
     from dotenv import load_dotenv
     load_dotenv(dotenv_path)
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+def env_list(key, default=""):
+    return [x.strip() for x in os.getenv(key, default).split(",") if x.strip()]
+
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
@@ -79,6 +82,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get("ACCOUNT_PROTOCOL", "http")
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
