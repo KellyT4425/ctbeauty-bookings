@@ -38,6 +38,7 @@ Testing occurred regularly throughout local development. Tests are documented be
  ![Edited](static/images/booking-edited.png) ![Returned](static/images/returned-slot.png) |
 |7| Slots that are **Cancelled** return to Available Slots. |Pass| User clicks Cancel, confirms Cancellation, is redirected to My Bookings and recieves confirmation message. <br>
 ![Cancel](static/images/booking-cancelled.png) ![All Slots Returned](static/images/all-slots-returned.png)|
+|8|  JS Logic for Booking Form works. [➡️ View `main.js`](static/js/main.js)|Pass| change cat/treatment → form auto submits → server can update the other fields; submit button stays disabled until an availability value exists. It’s defensive too: every feature is guarded by “if the element exists,” so missing fields don’t throw errors.|
 
 ### **Register**
 |Test #|Test|Results|Evidence|
@@ -102,6 +103,12 @@ Lighthouse (built into Chrome DevTools) was used to audit the site for performan
 
 The following scores were recorded: <br>
 ![Result](static/images/mobile-home.png)
+![Result](static/images/mobile-services.png)
+![Result](static/images/mobile-make-booking.png)
+![Result](static/images/mobile-mybookings.png)
+![Result](static/images/mobile-signin.png)
+![Result](static/images/mobile-signout.png)
+
 
 ## **Devices Used**
 > Browsers used to Test CT-Beauty Bookings:

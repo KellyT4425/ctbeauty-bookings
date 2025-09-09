@@ -54,6 +54,15 @@ footer .navbar-nav {
   letter-spacing: 2px;
 }
 
+.main-card {
+  min-height: 80vh;
+}
+
+.c-border {
+  max-width: 560px;
+  width: 100%;
+}
+
 /* 404 Page */
 .error-404 {
   background-color: #555350;

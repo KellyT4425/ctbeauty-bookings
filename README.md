@@ -243,13 +243,11 @@ The [WAVE](https://wave.webaim.org/) Accessibility Tool was used throughout deve
 
 > **CI Python Linter** The project was validated using the CI Python Linter, which checks code against PEP8 standards.
 
-- **Result**: All files passed validation, with the exception of a few E501 line too long warnings.
-
-- **Explanation**: These warnings occur on lines where reducing the character count would break readability or functionality — for example, long querysets, form field definitions, or model configurations that need to stay on a single line for clarity
+- **Result**: All files passed validation.
 
 [Python Tutor](https://pythontutor.com/) was used during development to step through code execution visually. This tool provides an interactive way to see how variables change, how functions are called, and how data flows through the program line by line. It was especially helpful for debugging complex logic, understanding the order of operations, and building confidence in how Python executes code.
 
-W3 HTML 5 [Validator](https://validator.w3.org/) checks complete on full deployed Heroku URL<br>
+W3 HTML 5 [Validator](https://validator.w3.org/) checks complete on full deployed Heroku URL and indvidual site pages. `home`, `services`, `make a booking` etc...<br>
 ![HTML](static/images/html-validation.png)
 
 Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/) - The CSS files were tested with the W3C CSS Validator using the deployed site URL.
@@ -267,7 +265,7 @@ Jigsaw W3 CSS 3  [Validator](https://jigsaw.w3.org/css-validator/) - The CSS fil
 
  - **Resolution**: These warnings are not actual errors, but compatibility notes. The project intentionally uses ES6+ syntax for cleaner and more maintainable code.
 
-- **Summary**: No functional errors were found, and the script works as expected in modern browsers that support ES6+.
+ - **Summary**: No functional errors were found, and the script works as expected in modern browsers that support ES6+.
 
 ## **Testing**🔧
 Manual tests were carried out to ensure the functionality of all main features.
@@ -280,7 +278,7 @@ Manual tests were carried out to ensure the functionality of all main features.
 
 - Browser compatibility and responsiveness were tested across different screen sizes.
 
-A full breakdown of the test cases, results, and screenshots can be found in the [➡️ Tests](testing.md)
+A full breakdown of the complete test cases, results, and screenshots can be found in the [➡️ Tests](testing.md)
 
 ## Bugs 🪲
 
@@ -322,15 +320,14 @@ web: gunicorn <your_project_name>.wsgi
   * Database configured from DATABASE_URL via dj-database-url
   * All secrets and environment-specific values read from env vars
 
-1. **Create the Heroku app:**
+2. **Create the Heroku app:**
    1. Heroku Dashboard → New → Create new app → name + region.
    2. Add-ons: add Heroku Postgres (creates DATABASE_URL).
-
-2. **Buildpacks:**
+3. **Buildpacks:**
    - Add heroku/python.
    - Add heroku/nodejs only if the project runs an npm build. Otherwise skip.
 
-3. **Config Vars (production):**
+4. **Config Vars (production):**
 
 > Do not set PORT (Heroku sets it automatically).
 
@@ -351,24 +348,24 @@ web: gunicorn <your_project_name>.wsgi
 - EMAIL_HOST_PASSWORD	<gmail app password>
 - EMAIL_TIMEOUT	20 (optional)
 
-1. **Connect repository and deploy:**
+5. **Connect repository and deploy:**
    1. App → Deploy tab → connect GitHub repo → select branch main.
    2. Click Enable Automatic Deploys (or use Manual deploy).
    3. Watch the build. Fix any collectstatic issues and redeploy if needed.
 
-2. **Database migrations:**
+6. **Database migrations:**
    - Migrations run automatically on each deploy via the release: command in the Procfile.
    - Manual alternative:
     > heroku run python manage.py migrate --app <your-heroku-app-name>
 
-3. **Create a production superuser:**
+7. **Create a production superuser:**
     > heroku run python manage.py createsuperuser --app <your-heroku-app-name>
 
-4. **Verify:**
+8. **Verify:**
    - Site: https://<your-app>.herokuapp.com/
    - Admin: https://<your-app>.herokuapp.com/admin/
 
-5.  **Logs / troubleshooting:**
+9.  **Logs / troubleshooting:**
     > heroku logs --tail --app <your-heroku-app-name>
 
 ## **Credits**

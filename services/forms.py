@@ -37,7 +37,7 @@ class CustomSignupForm(SignupForm):
         required=True,
         validators=[username_validator],
         widget=forms.TextInput(attrs={
-            "pattern": "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$",
+            "pattern": r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$",
             "title": "Only letters and numbers are allowed."
         })
     )

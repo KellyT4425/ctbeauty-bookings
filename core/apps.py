@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 from django.conf import settings
 
+
 class CoreConfig(AppConfig):
     """
     Core app configuration.
@@ -23,8 +24,10 @@ class CoreConfig(AppConfig):
             Site.objects.update_or_create(
                 id=getattr(settings, "SITE_ID", 1),
                 defaults={
-                    "domain": getattr(settings, "SITE_DOMAIN", "127.0.0.1:8000"),
-                    "name": getattr(settings, "SITE_NAME", "CT Beauty"),
+                    "domain": getattr(settings, "SITE_DOMAIN",
+                                      "127.0.0.1:8000"),
+                    "name": getattr(settings, "SITE_NAME",
+                                    "CT Beauty"),
                 },
             )
         except Exception:

@@ -38,7 +38,9 @@ class Availability(models.Model):
     def __str__(self):
         status = "Unavailable" if self.unavailable else (
             "Booked" if self.is_booked else "Available")
-        return f"{self.date} {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')} ({status})"
+        start = self.start_time.strftime("%H:%M")
+        end = self.end_time.strftime("%H:%M")
+        return f"{self.date} {start} - {end} ({status})"
 
 
 class Weekday(models.Model):
@@ -70,8 +72,10 @@ class AvailabilityBlock(models.Model):
 
     def __str__(self):
         days = ", ".join(d.name for d in self.days_of_week.all())
+        start = self.start_date.strftime('%H:%M')
+        end = self.end_time.strftime('%H:%M')
         return (f"{self.start_date} → {self.end_date} "
-                f"@ {self.start_time.strftime('%H:%M')}–{self.end_time.strftime('%H:%M')} "
+                f"@ {start}–{end} "
                 f"on {days}")
 
 
@@ -122,12 +126,14 @@ class Booking(models.Model):
         if not slot:
             return f"Booking for {self.user} ({t}, no slot)"
 
-        return f"Booking for {self.user} - {t} on {slot.date} from {slot.start_time:%H:%M}"
+        return (f"Booking for {self.user}"
+                f"- {t} on {slot.date} from {slot.start_time:%H:%M}")
 
     def clean(self):
         """
-        Don’t allow picking an Availability that already belongs to a *different* booking.
-        Allow saving when it's the same row (so admin can change status without errors).
+        Don’t allow picking an Availability that already belongs to
+        a *different* booking. Allow saving when it's the same row
+        (so admin can change status without errors).
         """
         slot_id = self.availability_id
         if not slot_id:

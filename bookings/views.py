@@ -141,4 +141,6 @@ def cancel_booking(request, pk):
         messages.success(request, "Your booking has been cancelled.")
         return redirect('bookings:list')
 
-    return render(request, 'bookings/booking_confirm_cancel.html', {'booking': booking})
+    return render(request,
+                  'bookings/booking_confirm_cancel.html',
+                  {'booking': booking})

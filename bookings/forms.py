@@ -45,7 +45,7 @@ class BookingForm(forms.ModelForm):
           selected treatment’s duration; applies readable option labels.
         - In edit-only mode, disables Category/Treatment/Notes fields.
         """
-        self.edit_only_availability = kwargs.pop(
+        self.edit_availability = kwargs.pop(
             "edit_only_availability", False)
         prefilter_category = kwargs.pop("category_id", None)
         super().__init__(*args, **kwargs)
@@ -74,7 +74,8 @@ class BookingForm(forms.ModelForm):
                 cat_id = None
         if not cat_id and prefilter_category:
             cat_id = prefilter_category if isinstance(
-                prefilter_category, int) else getattr(prefilter_category, "pk", None)
+                prefilter_category, int
+            ) else getattr(prefilter_category, "pk", None)
         if not cat_id and self.initial.get("category"):
             cat_init = self.initial["category"]
             cat_id = cat_init.pk if hasattr(cat_init, "pk") else cat_init
@@ -93,8 +94,10 @@ class BookingForm(forms.ModelForm):
         now_local = timezone.localtime()
         today, current_time = now_local.date(), now_local.time()
         availability_qs = (
-            Availability.objects.filter(unavailable=False, is_booked=False)
-            .filter(Q(date__gt=today) | Q(date=today, start_time__gte=current_time))
+            Availability.objects.filter(
+                unavailable=False, is_booked=False)
+            .filter(Q(date__gt=today) | Q(date=today,
+                                          start_time__gte=current_time))
             .order_by("date", "start_time")
         )
 
@@ -109,8 +112,10 @@ class BookingForm(forms.ModelForm):
                 t = Treatment.objects.get(pk=selected_treatment_id)
                 if hasattr(t, "duration"):
                     availability_qs = (
-                        availability_qs.filter(duration=30)
-                        if t.duration == 30 else availability_qs.filter(duration__in=[30, 60])
+                        availability_qs.filter(
+                            duration=30)
+                        if t.duration == 30 else availability_qs.filter(
+                            duration__in=[30, 60])
                     )
             except Treatment.DoesNotExist:
                 pass
@@ -121,22 +126,22 @@ class BookingForm(forms.ModelForm):
         )
 
         # --- Edit-only mode: lock non-availability fields ---
-        if self.edit_only_availability and self.instance and self.instance.pk:
+        if self.edit_availability and self.instance and self.instance.pk:
             for name in ("category", "treatment", "notes"):
                 if name in self.fields:
                     self.fields[name].disabled = True
                     self.fields[name].required = False
-                    self.fields[name].help_text = "Not editable on an existing booking."
 
     def clean(self):
         cleaned = super().clean()
 
         # Respect edit-only guard
-        if self.edit_only_availability and self.instance and self.instance.pk:
+        if self.edit_availability and self.instance and self.instance.pk:
             for name in ("category", "treatment", "notes"):
                 if name in self.changed_data:
                     self.add_error(
-                        name, "To change this, cancel the booking and make a new one.")
+                        name, "To change this, cancel the "
+                        "booking and make a new one.")
             return cleaned
 
         category = cleaned.get("category")
@@ -153,8 +158,8 @@ class BookingForm(forms.ModelForm):
 
         # Cross-field: treatment must belong to selected category
         if category and treatment and treatment.category_id != category.id:
-            self.add_error(
-                "treatment", "Please choose a treatment in the selected category.")
+            self.add_error("treatment",
+                           "Please choose a treatment in your category.")
 
         return cleaned
 

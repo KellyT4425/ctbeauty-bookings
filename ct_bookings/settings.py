@@ -34,15 +34,19 @@ if dotenv_path.exists():
     from dotenv import load_dotenv
     load_dotenv(dotenv_path)
 
+
 def env_list(key, default=""):
     return [x.strip() for x in os.getenv(key, default).split(",") if x.strip()]
+
 
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
-    raise RuntimeError("SECRET_KEY is missing. Check your .env or Heroku config vars.")
+    raise RuntimeError(
+        "SECRET_KEY is missing. "
+        "Check your .env or Heroku config vars.")
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
