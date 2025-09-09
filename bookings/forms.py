@@ -48,6 +48,7 @@ class BookingForm(forms.ModelForm):
         self.edit_availability = kwargs.pop(
             "edit_availability", False)
         prefilter_category = kwargs.pop("category_id", None)
+        treatment_override = kwargs.pop("treatment_id", None)
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -103,7 +104,8 @@ class BookingForm(forms.ModelForm):
 
         # If a treatment is chosen, trim slots by duration rules
         selected_treatment_id = (
-            self.data.get("treatment")
+            treatment_override
+            or self.data.get("treatment")
             or self.initial.get("treatment")
             or getattr(self.instance, "treatment_id", None)
         )

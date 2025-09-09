@@ -19,7 +19,7 @@ def make_booking(request):
         "treatment") or request.GET.get("treatment")
 
     if request.method == "POST":
-        form = BookingForm(request.POST or 404,
+        form = BookingForm(request.POST or None,
                            category_id=category_id,
                            treatment_id=treatment_id,)
         if form.is_valid():
