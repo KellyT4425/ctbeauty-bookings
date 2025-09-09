@@ -354,9 +354,8 @@ web: gunicorn <your_project_name>.wsgi
    3. Watch the build. Fix any collectstatic issues and redeploy if needed.
 
 6. **Database migrations:**
-   - Migrations run automatically on each deploy via the release: command in the Procfile.
-   - Manual alternative:
-    > heroku run python manage.py migrate --app <your-heroku-app-name>
+   - Manual Migrations:
+    > python manage.py migrate --app <your-heroku-app-name>
 
 7. **Create a production superuser:**
     > heroku run python manage.py createsuperuser --app <your-heroku-app-name>
