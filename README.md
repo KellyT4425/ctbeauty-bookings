@@ -39,6 +39,19 @@
 | **Env/Config**      | python-dotenv                                      | Load `.env` in development |
 | **Quality/Tooling** | djLint, Conventional Commits                       | Template formatting & commit convention |
 
+### Apps Overview
+
+- **core** — Site shell and shared utilities.
+
+  - `apps.py` (`CoreConfig`):
+    - On startup, updates the Django **Site** object from env vars so
+      email links and allauth URLs use the correct domain.
+    - Env keys: `SITE_ID` (default 1), `SITE_DOMAIN`, `SITE_NAME`.
+
+  - `forms.py`:
+    - `CustomSignupForm` extends allauth’s signup to collect and save
+      `first_name` and `last_name`.
+
 ## **User Stories** 🙋
 - **Milestone: Functional Booking System**.
 
